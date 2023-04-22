@@ -14,7 +14,7 @@ Steam Connection Info injects a DLL into steam.exe that hooks ReadP2PPacket() an
 
 Both steam.exe and the required DLL that is injected are x86. For the DLL injection to work properly Steam Connection Info must be compiled to x86.
 
-**USAGE/HINTS:**
+**USAGE/HINTS**
 
 Press Insert to lock the window, making it transparent for all input. Press insert again to unlock so you can move the window around and interact with it.
 
@@ -22,7 +22,7 @@ Press Home to hide the window. Press Home again to show it.
 
 Control the window's opacity by right clicking on the tray icon -> Opacity -> Drag the slider
 
-**TODO:**
+**TODO**
 
 Add country/flag for player's IP
 
