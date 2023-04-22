@@ -7,11 +7,16 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x86</Platforms>
-    <AssemblyName>SteamConnectionInfo</AssemblyName>
+    <AssemblyName>SteamConnectionInfo.WPF</AssemblyName>
     <ApplicationIcon>SteamConnectionInfoIcon.ico</ApplicationIcon>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
-
+	
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Remove="icons8-close-24.png" />
     <None Remove="icons8-opacity-24.png" />
@@ -59,5 +64,4 @@
       <LastGenOutput>SteamConnectionInfo.WPF.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>

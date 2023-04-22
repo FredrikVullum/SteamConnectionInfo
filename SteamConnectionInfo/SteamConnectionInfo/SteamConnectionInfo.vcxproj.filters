@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="steam\CSteamID.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="hooks\SendP2PPacket.h" />
+    <ClInclude Include="steam\CSteamID.h" />
+    <ClInclude Include="steam\ISteamFriends.h" />
+    <ClInclude Include="steam\ISteamNetworking.h" />
+    <ClInclude Include="steam\SteamTypes.h" />
+    <ClInclude Include="hooks\GetFriendPersonaName.h" />
+    <ClInclude Include="helpers\VirtualMethodTableHooker.h" />
+    <ClInclude Include="helpers\SignatureFinder.h" />
+    <ClInclude Include="models\player.h" />
+    <ClInclude Include="models\player_serializer.h" />
+    <ClInclude Include="helpers\SharedMemoryProducer.h" />
+    <ClInclude Include="nlohmann\json.hpp" />
+  </ItemGroup>
+</Project>

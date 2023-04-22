@@ -6,9 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationIcon>SteamConnectionInfoIcon.ico</ApplicationIcon>
-    <ApplicationManifest>Q:\Visual Studio 2022 Projects\C#\SteamConnectionInfo.GUI\SteamConnectionInfo.WPF\Properties\app.manifest</ApplicationManifest>
+    <ApplicationManifest>Q:\Visual Studio 2022 Projects\C#\SteamConnectionInfo\SteamConnectionInfo.WPF\Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
-
+  
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Content Include="SteamConnectionInfoIcon.ico" />
   </ItemGroup>
