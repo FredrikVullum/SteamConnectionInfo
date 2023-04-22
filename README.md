@@ -30,6 +30,8 @@ Add support for games using newer SteamNetworkingMessages interface for P2P
 
 Add Latency column that shows a player's latency
 
+Add functionality to hide/show specific columns
+
 Fix the Opacity slider background in the tray menu
 
 Add functionality for setting your own keybindings for lock/unlock and hide/show of Window
