@@ -2,6 +2,9 @@
 Steam Connection Info main application and overlay. Used for displaying extra data about players you are playing with in multiplayer Steam games that use P2P.
 
 
+**HOW TO USE**
+
+Download the Steam Connection Info ZIP file under releases, extract it somewhere and run SteamConnectionInfo.exe.
 
 **IMPORTANT:**
 
@@ -13,9 +16,7 @@ Both steam.exe and the required DLL that is injected are x86. For the DLL inject
 
 **USAGE/HINTS:**
 
-Press Insert to lock the window, making it transparent for all input. 
-
-Press insert again to unlock so you can move the window around and interact with it.
+Press Insert to lock the window, making it transparent for all input. Press insert again to unlock so you can move the window around and interact with it.
 
 Press Home to hide the window. Press Home again to show it.
 
@@ -34,4 +35,3 @@ Fix the Opacity slider background in the tray menu
 Add functionality for setting your own keybindings for lock/unlock and hide/show of Window
 
 Create a repository for the DLL that is injected
-
