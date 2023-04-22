@@ -9,7 +9,7 @@ It currently only supports games that are using the old SteamNetworking interfac
 
 SteamConnectionInfo.WPF injects the SteamConnectionInfo DLL into steam.exe and this DLL hooks the function [ReadP2PPacket()](https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket) which is found in the steamclient module and uses this to establish a connection between Steam ID and IP address. The SteamConnectionInfo DLL communicates with SteamConnectionInfo.WPF through shared memory so that SteamConnectionInfo.WPF can receive data about the players and show it to you in the overlay.
 
-For the DLL injection to work properly SteamConnectionInfo.WPF and SteamConnectionInfo DLL must be compiled to x86. The SteamConnectionInfo DLL also needs to be in the same folder as SteamConnectionInfo.WPF.exe
+SteamConnectionInfo DLL is automatically injected into steam.exe. For the DLL injection to work properly SteamConnectionInfo.WPF and SteamConnectionInfo DLL must be compiled to x86. The SteamConnectionInfo DLL also needs to be in the same folder as SteamConnectionInfo.WPF.exe
 
 **USAGE/HINTS**
 
