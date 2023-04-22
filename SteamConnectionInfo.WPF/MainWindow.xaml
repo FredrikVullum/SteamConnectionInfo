@@ -1,0 +1,169 @@
+﻿
+<Window x:Class="SteamConnectionInfoWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:n="http://www.hardcodet.net/taskbar"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:converters="clr-namespace:SteamConnectionInfoWpf.Converters"
+        mc:Ignorable="d"
+        Title="MainWindow" 
+        SnapsToDevicePixels="False"
+        Height="195" 
+        Width="400"
+        Topmost="True"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Opacity="0.8"
+        Focusable="False"
+        ResizeMode="CanResizeWithGrip"
+        ShowInTaskbar="False"
+    >
+
+    <Window.Resources>
+        <FontFamily x:Key="GlobalFont">Nirmala Ui</FontFamily>
+        <converters:UIntToIPAddressConverter x:Key="UIntToIPAddressConverter"/>
+    </Window.Resources>
+
+    <Grid Background="#ffffff" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#474747" Width="Auto" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MouseDown="Border_MouseDown">
+            <Label Content="STEAM CONNECTION INFO 1.0" FontFamily="{StaticResource GlobalFont}" FontSize="13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+
+        <DataGrid 
+            x:Name="playersDataGrid"
+            Grid.Row="1"
+            BorderThickness="0"
+            Background="#333333"
+            ItemsSource="{Binding Players}" 
+            AutoGenerateColumns="False" 
+            VerticalAlignment="Stretch"
+            HeadersVisibility="Column"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Disabled"
+            ColumnWidth="*"
+            CanUserAddRows="False"
+            IsReadOnly="True"
+            SelectionMode="Single"
+            CanUserSortColumns="False"
+            GridLinesVisibility="None"
+            Focusable="False"
+            FontFamily="{StaticResource GlobalFont}">
+
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Margin" Value="0 8 0 0"/>
+
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="GhostWhite"/>
+                        </Trigger>
+
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter Property="Background" Value="#333333"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+
+            </DataGrid.RowStyle>
+
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="12"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Trigger>
+
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+
+                </Style>
+            </DataGrid.CellStyle>
+            
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="#575757"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="13"/>
+                </Style>
+
+            </DataGrid.ColumnHeaderStyle>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="100" Header="IP" Binding="{Binding SteamIp, Converter={StaticResource UIntToIPAddressConverter}}" />
+                <DataGridTextColumn Width="45" Header="PORT" Binding="{Binding SteamPort}" />
+                <DataGridTextColumn Width="45" Header="RELAY" Binding="{Binding SteamRelay}" />
+                <DataGridTextColumn Width="*" Header="NAME" Binding="{Binding SteamName}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="2" Background="#474747" Width="Auto" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MouseDown="Border_MouseDown">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="windowLockLabel" Content="UNLOCKED" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="separatorLabel" Content="-" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="numPlayersLabel" Content="0 " FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="numPlayersHelperLabel" Content="PLAYER(S)" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-5, 0, 0, 0"/>
+            </StackPanel>
+        </Border>
+
+        <n:TaskbarIcon x:Name="SciGuiNotifyIcon" IconSource="pack://application:,,,/SteamConnectionInfoIcon.ico" ToolTipText="Steam Connection Info">
+            <n:TaskbarIcon.ContextMenu >
+                <ContextMenu>
+                    <MenuItem Header="UNLOCK/LOCK WINDOW" Click="MenuItemLock_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-privacy-24.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="SHOW/HIDE WINDOW" Click="MenuItemShow_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-show-property-24.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="OPACITY">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-opacity-24.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                        
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="{x:Type MenuItem}">
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                        
+                        
+                        <MenuItem.Items>
+                            <StackPanel x:Name="OpacityStackPanel" Orientation="Vertical">
+                                <Slider x:Name="OpacitySlider" Minimum="1" Maximum="100" Value="80" Margin="-30, 5, -45, 0" Width="200" TickFrequency="1" TickPlacement="None" Thumb.DragCompleted="OpacitySlider_DragCompleted" ValueChanged="OpacitySlider_ValueChanged"/>
+                                <Label x:Name="OpacityLabel" Content="80%" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </MenuItem.Items>
+                    </MenuItem>
+
+                    <MenuItem Header="EXIT" Click="MenuItemExit_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-close-24.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </n:TaskbarIcon.ContextMenu>
+        </n:TaskbarIcon>
+        
+    </Grid>
+</Window>
+    
