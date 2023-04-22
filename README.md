@@ -34,4 +34,4 @@ Fix the Opacity slider background in the tray menu
 
 Add functionality for setting your own keybindings for lock/unlock and hide/show of Window
 
-Create a repository for the DLL that is injected
+Create a a Git repository for the DLL that is injected
