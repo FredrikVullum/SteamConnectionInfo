@@ -60,13 +60,13 @@ namespace Hooks {
 		}
 
 		DWORD CClientNetworkingVTableInstance = SignatureFinder::Find("steamclient.dll", "C7 07 ? ? ? ? C7 47 ? ? ? ? ? E8 ? ? ? ? 8B 47 0C") + 2;
-		DWORD addressCUserFriends = SignatureFinder::Find("steamclient.dll", "C7 07 ? ? ? ? C7 47 ? ? ? ? ? 8B 40 24") + 2;
+		DWORD CUserFriendsVTableInstance = SignatureFinder::Find("steamclient.dll", "C7 07 ? ? ? ? C7 47 ? ? ? ? ? 8B 40 24") + 2;
 
 		SteamNetworkingHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CClientNetworkingVTableInstance);
 		if (!SteamNetworkingHooker)
 			return;
 
-		SteamFriendsHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)addressCUserFriends);
+		SteamFriendsHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CUserFriendsVTableInstance);
 		if (!SteamFriendsHooker)
 			return;
 
