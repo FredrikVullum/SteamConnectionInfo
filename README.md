@@ -3,7 +3,7 @@ Steam Connection Info main application and overlay
 
 It currently only supports games that are using the old SteamNetworking interface for P2P.
 
-IMPORTANT:
+**IMPORTANT:**
 
 Steam Connection Info injects a DLL into steam.exe that hooks ReadP2PPacket() and uses this to establish a connection between Steam ID and IP address. 
 
@@ -15,7 +15,7 @@ Both steam.exe and the required DLL that is injected are x86.
 
 For the DLL injection to work properly Steam Connection Info must be compiled to x86.
 
-USAGE/HINTS:
+**USAGE/HINTS:**
 
 Press Insert to lock the window, making it transparent for all input. 
 
@@ -25,7 +25,7 @@ Press Home to hide the window. Press Home again to show it.
 
 Control the window's opacity by right clicking on the tray icon -> Opacity -> Drag the slider
 
-TODO:
+**TODO:**
 
 Add country/flag for player's IP
 
