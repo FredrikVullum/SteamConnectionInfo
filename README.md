@@ -1,19 +1,15 @@
-# SteamConnectionInfo.GUI
-Steam Connection Info main application and overlay. Used for displaying extra data about players you are playing with in multiplayer Steam games that use P2P.
+# Steam Connection Info
+Steam Connection Info is used for displaying extra data about players you are playing with in multiplayer Steam games that use P2P.
 
 Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
-
-**HOW TO USE**
-
-Download the Steam Connection Info ZIP file from [releases](https://github.com/FredrikVullum/SteamConnectionInfo.GUI/releases/), extract it somewhere and run SteamConnectionInfo.exe.
 
 **IMPORTANT:**
 
 It currently only supports games that are using the old SteamNetworking interface for P2P. Tested and works with Elden Ring, for example.
 
-Steam Connection Info injects a DLL into steam.exe that hooks the function [ReadP2PPacket()](https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket) which runs in the steamclient module and uses this to establish a connection between Steam ID and IP address. The DLL communicates with Steam Connection Info through shared memory so that it can receive players to put in the list on the overlay. You need this DLL for Steam Connection Info to work properly. It needs to be in the same folder as SteamConnectionInfo.exe. If Steam is updated this might also make the DLL cause Steam to crash and thus a new version of the DLL is required.
+SteamConnectionInfo.WPF injects the SteamConnectionInfo DLL into steam.exe and this DLL hooks the function [ReadP2PPacket()](https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket) which runs in the steamclient module and uses this to establish a connection between Steam ID and IP address. The SteamConnectionInfo DLL communicates with SteamConnectionInfo.WPF through shared memory so that it can receive players to put in the list on the overlay.
 
-Both steam.exe and the required DLL that is injected are x86. For the DLL injection to work properly Steam Connection Info must be compiled to x86.
+For the DLL injection to work properly SteamConnectionInfo.WPF and SteamConnectionInfo DLL must be compiled to x86. The SteamConnectionInfo DLL also needs to be in the same folder as SteamConnectionInfo.WPF.exe
 
 **USAGE/HINTS**
 
@@ -37,4 +33,4 @@ Fix the Opacity slider background in the tray menu
 
 Add functionality for setting your own keybindings for lock/unlock and hide/show of Window
 
-Create a a Git repository for the DLL that is injected
+Add functionality to change overlay style and font
