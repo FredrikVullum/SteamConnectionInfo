@@ -4,13 +4,13 @@ Steam Connection Info main application and overlay. Used for displaying extra da
 
 **HOW TO USE**
 
-Download the Steam Connection Info ZIP file under releases, extract it somewhere and run SteamConnectionInfo.exe.
+Download the Steam Connection Info ZIP file from [releases](https://github.com/FredrikVullum/SteamConnectionInfo.GUI/releases/), extract it somewhere and run SteamConnectionInfo.exe.
 
 **IMPORTANT:**
 
 It currently only supports games that are using the old SteamNetworking interface for P2P. Tested and works with Elden Ring, for example.
 
-Steam Connection Info injects a DLL into steam.exe that hooks ReadP2PPacket() and uses this to establish a connection between Steam ID and IP address. The DLL communicates with Steam Connection Info through shared memory so that it can receive players to put in the list on the overlay. You need this DLL for Steam Connection Info to work properly. It needs to be in the same folder as SteamConnectionInfo.exe. If Steam is updated this might also make the DLL crash and thus a new version of the DLL is required.
+Steam Connection Info injects a DLL into steam.exe that hooks the function [ReadP2PPacket()](https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket) which runs in the steamclient module and uses this to establish a connection between Steam ID and IP address. The DLL communicates with Steam Connection Info through shared memory so that it can receive players to put in the list on the overlay. You need this DLL for Steam Connection Info to work properly. It needs to be in the same folder as SteamConnectionInfo.exe. If Steam is updated this might also make the DLL cause Steam to crash and thus a new version of the DLL is required.
 
 Both steam.exe and the required DLL that is injected are x86. For the DLL injection to work properly Steam Connection Info must be compiled to x86.
 
