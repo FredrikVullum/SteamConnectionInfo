@@ -1,5 +1,5 @@
 # SteamConnectionInfo.GUI
-Steam Connection Info main application and overlay.
+Steam Connection Info main application and overlay. Used for displaying extra data about players you are playing with in multiplayer Steam games that use P2P.
 
 
 
@@ -32,5 +32,6 @@ Add Latency column that shows a player's latency
 Fix the Opacity slider background in the tray menu
 
 Add functionality for setting your own keybindings for lock/unlock and hide/show of Window
- 
+
+Create a repository for the DLL that is injected
 
