@@ -1,6 +1,7 @@
 # SteamConnectionInfo.GUI
 Steam Connection Info main application and overlay. Used for displaying extra data about players you are playing with in multiplayer Steam games that use P2P.
 
+Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
 **HOW TO USE**
 
