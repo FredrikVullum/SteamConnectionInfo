@@ -34,3 +34,5 @@ Fix the Opacity slider background in the tray menu
 Add functionality to set your own keybindings for locking/unlocking and hiding/showing the overlay
 
 Add functionality to change overlay style and font
+
+Add functionality to filter players based on latency and/or country
