@@ -38,3 +38,5 @@ Add functionality to set your own keybindings for locking/unlocking and hiding/s
 Add functionality to change overlay style and font
 
 Add functionality to filter players based on latency and/or country
+
+Add functionality to save all players you have played with and save them in a file
