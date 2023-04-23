@@ -30,6 +30,21 @@ namespace SteamConnectionInfoWpf
         {
             base.OnSourceInitialized(e);
 
+            bool mutexCreated;
+            Mutex mutex = new Mutex(true, "SteamConnectionInfoWPFAppMutex", out mutexCreated);
+            if (!mutexCreated)
+            {
+                MessageBox.Show("An instance of SteamConnectionInfo.WPF is already running." +
+                 " Only one instance of SteamConnectionInfo.WPF is allowed to run.",
+                 "Duplicate Instance Detected",
+                 MessageBoxButton.OK,
+                 MessageBoxImage.Exclamation);
+
+                mutex.Close();
+                Application.Current.Shutdown();
+                return;
+            }
+
             playersDataGrid.DataContext = _playerViewModel;
 
             ConfigurationService.Load();
