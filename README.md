@@ -39,4 +39,4 @@ Add functionality to change overlay style and font of the overlay
 
 Add functionality to close P2P session based on player latency and/or country
 
-Add functionality to save all players you have played with and save them in a file
+Add functionality to save all players you have played with in a file
