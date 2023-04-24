@@ -47,15 +47,14 @@ namespace Hooks {
 				++it;
 
 				/*
-				//check player's latency.. if it is higher than specified in latency filter..  remove and Close the p2p session with this player
-				//latency filter can be in a file that contains the maximum latency? maybe the same one as country filter
+				if player's country is in the country filter... remove and Close the p2p session with this player
+				country filter can be a file that contains countries that should be removed?
+	
+				check player's latency.. if it is higher than specified in latency filter..  remove and Close the p2p session with this player
+				latency filter can be in a file that contains the maximum latency? maybe the same one as country filter
 
-				//check if player has a country, if not.. find it
-				//if player's country is in the country filter... remove and Close the p2p session with this player
-				//country filter can be a file that contains countries that should be removed?
-
-				//these filters can just be additional .json files that contain countries in one file and a latency max in the other
-				//maybe I try can to read appsettings.json to check if filter for country or latency is enabled
+				these filters can just be additional .json files that contain countries in one file and a latency max in the other
+				maybe I try can to read appsettings.json to check if filter for country or latency is enabled
 				*/	
 			}
 			playersMutex.unlock();
