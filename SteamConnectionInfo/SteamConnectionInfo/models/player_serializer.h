@@ -1,5 +1,5 @@
 #pragma once
-#include "../nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 #include <vector>
 #include "player.h"
 
@@ -13,7 +13,8 @@ public:
 			{"steam_port", player.steam_port},
 			{"steam_name", player.steam_name},
 			{"steam_id", player.steam_id},
-			{"steam_relay", player.steam_relay}
+			{"steam_relay", player.steam_relay},
+			{"country", player.country}
 		};
 		return jsonObject.dump();
 	}
@@ -25,7 +26,8 @@ public:
 				{"steam_port", player.steam_port},
 				{"steam_name", player.steam_name},
 				{"steam_id", player.steam_id},
-				{"steam_relay", player.steam_relay}
+				{"steam_relay", player.steam_relay},
+				{"country", player.country}
 			};
 			jsonArray.push_back(jsonObject);
 		}
@@ -41,6 +43,7 @@ public:
 			jsonObject.at("steam_name").get_to(player.steam_name);
 			jsonObject.at("steam_id").get_to(player.steam_id);
 			jsonObject.at("steam_relay").get_to(player.steam_relay);
+			jsonObject.at("country").get_to(player.country);
 			players.push_back(player);
 		}
 		return players;
@@ -55,7 +58,7 @@ public:
 		jsonObject.at("steam_name").get_to(player.steam_name);
 		jsonObject.at("steam_id").get_to(player.steam_id);
 		jsonObject.at("steam_relay").get_to(player.steam_relay);
-
+		jsonObject.at("country").get_to(player.country);
 		return player;
 	}
 };

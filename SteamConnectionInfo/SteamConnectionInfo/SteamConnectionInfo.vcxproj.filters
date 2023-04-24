@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="steam\CSteamID.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hooks\SendP2PPacket.h" />
@@ -16,6 +15,7 @@
     <ClInclude Include="models\player.h" />
     <ClInclude Include="models\player_serializer.h" />
     <ClInclude Include="helpers\SharedMemoryProducer.h" />
-    <ClInclude Include="nlohmann\json.hpp" />
+    <ClInclude Include="helpers\IpToCountryResolver.h" />
+    <ClInclude Include="packages\include\nlohmann\json.hpp" />
   </ItemGroup>
 </Project>

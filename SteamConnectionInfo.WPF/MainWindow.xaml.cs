@@ -246,8 +246,6 @@ namespace SteamConnectionInfoWpf
                         }
                         else
                         {
-                            Trace.WriteLine(data);
-
                             var players = JsonConvert.DeserializeObject<List<Player>>(data);
 
                             mainWindow.Dispatcher.Invoke(() =>

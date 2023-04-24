@@ -1,12 +1,13 @@
 #include "models/player.h"
+#include "models/player_serializer.h"
 
 #include "helpers/VirtualMethodTableHooker.h"
 #include "helpers/SignatureFinder.h"
 #include "helpers/SharedMemoryProducer.h"
+#include "helpers/IpToCountryResolver.h"
 
 #include "hooks/GetFriendPersonaName.h"
 #include "hooks/SendP2PPacket.h"
-#include "models/player_serializer.h"
 
 namespace Hooks {
 
@@ -25,31 +26,51 @@ namespace Hooks {
 		if (!producer.Initialize("SteamConnectionInfoSharedMemoryRegion", 4096))
 			return;
 
-		while (true) {
+		while (true) 
+		{
 			auto current_time = std::chrono::steady_clock::now();
 
 			playersMutex.lock();
-			for (auto it = players.begin(); it != players.end();) {
+			for (auto it = players.begin(); it != players.end();) 
+			{
 				auto time_delta = std::chrono::duration_cast<std::chrono::seconds>(current_time - it->time_point);
+
 				if (time_delta.count() > 4) {
 					it = players.erase(it);
+					continue;
 				}
-				else {
-					++it;
+
+				if (it->country.empty()) {
+					it->country = IpToCountryResolver::Resolve(it->steam_ip);
 				}
+
+				++it;
+
+				/*
+				//check player's latency.. if it is higher than specified in latency filter..  remove and Close the p2p session with this player
+				//latency filter can be in a file that contains the maximum latency? maybe the same one as country filter
+
+				//check if player has a country, if not.. find it
+				//if player's country is in the country filter... remove and Close the p2p session with this player
+				//country filter can be a file that contains countries that should be removed?
+
+				//these filters can just be additional .json files that contain countries in one file and a latency max in the other
+				//maybe I try can to read appsettings.json to check if filter for country or latency is enabled
+				*/	
 			}
 			playersMutex.unlock();
 
-			if (producer.ConsumerIsReady()) {
+			if (producer.ConsumerIsReady()) 
+			{
 				playersMutex.lock();
 				std::string playersStr = PlayerSerializer::SerializeMany(players);
 				producer.SetData(playersStr);
 				playersMutex.unlock();
 			}
 
-			Sleep(1000);
+			Sleep(1500);
 		}
-	}
+	} 
 
 	void Initialize() {
 		DWORD steamclient = 0;

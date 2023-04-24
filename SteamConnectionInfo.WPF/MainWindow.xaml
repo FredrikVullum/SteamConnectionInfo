@@ -10,7 +10,7 @@
         Title="MainWindow" 
         SnapsToDevicePixels="False"
         Height="195" 
-        Width="400"
+        Width="500"
         Topmost="True"
         AllowsTransparency="True"
         WindowStyle="None"
@@ -103,9 +103,10 @@
             </DataGrid.ColumnHeaderStyle>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Width="100" Header="IP" Binding="{Binding SteamIp, Converter={StaticResource UIntToIPAddressConverter}}" />
-                <DataGridTextColumn Width="45" Header="PORT" Binding="{Binding SteamPort}" />
-                <DataGridTextColumn Width="45" Header="RELAY" Binding="{Binding SteamRelay}" />
+                <DataGridTextColumn Width="110" Header="IP" Binding="{Binding SteamIp, Converter={StaticResource UIntToIPAddressConverter}}" />
+                <DataGridTextColumn Width="50" Header="PORT" Binding="{Binding SteamPort}" />
+                <DataGridTextColumn Width="50" Header="RELAY" Binding="{Binding SteamRelay}" />
+                <DataGridTextColumn Width="80" Header="COUNTRY" Binding="{Binding Country}" />
                 <DataGridTextColumn Width="*" Header="NAME" Binding="{Binding SteamName}" />
             </DataGrid.Columns>
         </DataGrid>

@@ -14,6 +14,7 @@ public:
 	std::string steam_name;
 	uint64_t steam_id;
 	uint8_t steam_relay;
+	std::string country;
 
 	Player() {
 		steam_ip = 0;
@@ -21,5 +22,6 @@ public:
 		steam_name = "";
 		steam_id = 0;
 		steam_relay = 0;
+		country = "";
 	}
 };

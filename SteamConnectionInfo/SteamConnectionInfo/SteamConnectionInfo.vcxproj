@@ -77,13 +77,14 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>Q:\Visual Studio 2022 Projects\SCI\SteamConnectionInfo\SteamConnectionInfo\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Q:\Visual Studio 2022 Projects\SCI\SteamConnectionInfo\SteamConnectionInfo\nlohmann-json_x86-windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\..\SteamConnectionInfo.WPF\bin\x86\$(Configuration)\net6.0-windows\"</Command>
@@ -98,16 +99,18 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>Q:\Visual Studio 2022 Projects\SCI\SteamConnectionInfo\SteamConnectionInfo\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>Q:\Visual Studio 2022 Projects\C#\SteamConnectionInfo\SteamConnectionInfo\SteamConnectionInfo\packages\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Q:\Visual Studio 2022 Projects\SCI\SteamConnectionInfo\SteamConnectionInfo\nlohmann-json_x86-windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libcurl.lib;crypt32.lib;ws2_32.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Q:\Visual Studio 2022 Projects\C#\SteamConnectionInfo\SteamConnectionInfo\SteamConnectionInfo\packages\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\..\SteamConnectionInfo.WPF\bin\x86\$(Configuration)\net6.0-windows\"</Command>
@@ -154,21 +157,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="steam\CSteamID.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="helpers\IpToCountryResolver.h" />
     <ClInclude Include="helpers\SharedMemoryProducer.h" />
     <ClInclude Include="helpers\SignatureFinder.h" />
+    <ClInclude Include="helpers\VirtualMethodTableHooker.h" />
     <ClInclude Include="hooks\GetFriendPersonaName.h" />
     <ClInclude Include="hooks\SendP2PPacket.h" />
     <ClInclude Include="models\player.h" />
     <ClInclude Include="models\player_serializer.h" />
-    <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="steam\CSteamID.h" />
     <ClInclude Include="steam\ISteamFriends.h" />
     <ClInclude Include="steam\ISteamNetworking.h" />
     <ClInclude Include="steam\SteamTypes.h" />
-    <ClInclude Include="helpers\VirtualMethodTableHooker.h" />
+    <ClInclude Include="packages\include\nlohmann\json.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
