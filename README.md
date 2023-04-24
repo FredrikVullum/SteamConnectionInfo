@@ -23,13 +23,11 @@ SteamConnectionInfo.WPF injects the SteamConnectionInfo DLL into steam.exe and t
 
 **TODO**
 
-Add Country column that shows the player's country based on their IP in the overlay
+Add functionality to hide/show specific columns like IP, Country, Relay, etc. in the overlay
 
 Add Latency column that shows a player's latency in the overlay
 
 Add support for games using newer SteamNetworkingMessages interface for P2P
-
-Add functionality to hide/show specific columns like IP, Country, Relay, etc. in the overlay
 
 Fix the Opacity slider background in the tray menu
 
