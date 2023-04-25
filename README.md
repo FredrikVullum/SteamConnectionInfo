@@ -21,6 +21,12 @@ Control the window's opacity by right clicking on the tray icon -> Opacity -> Dr
 
 SteamConnectionInfo.WPF injects the DLL from SteamConnectionInfo.DLL into steam.exe and this DLL hooks the function [ReadP2PPacket()](https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket) which is found in the steamclient module and uses this to establish a connection between Steam ID and IP address. DLL from SteamConnectionInfo.DLL communicates with SteamConnectionInfo.WPF through shared memory so that SteamConnectionInfo.WPF can receive data about the players and show it to you in the overlay.
 
+**STRUCTURE**
+
+SteamConnectionInfo.DLL is a C++ project that builds the DLL.
+SteamConnectionInfo.Core is a C# class library that contains functions necessary for SteamConnectionInfo.WPF
+SteamConnectionInfo.WPF is a C# project that contains the main executable which shows the overlay, interacts with the dll, etc.
+
 **TODO**
 
 Add Latency column that shows a player's latency in the overlay
