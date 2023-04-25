@@ -24,7 +24,9 @@ SteamConnectionInfo.WPF injects the DLL from SteamConnectionInfo.DLL into steam.
 **STRUCTURE**
 
 SteamConnectionInfo.DLL is a C++ project that builds the DLL.
+
 SteamConnectionInfo.Core is a C# class library that contains functions necessary for SteamConnectionInfo.WPF
+
 SteamConnectionInfo.WPF is a C# project that contains the main executable which shows the overlay, interacts with the dll, etc.
 
 **TODO**
