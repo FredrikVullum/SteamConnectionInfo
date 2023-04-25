@@ -14,6 +14,7 @@ using SteamConnectionInfoCore.Services;
 using SteamConnectionInfoCore.Models;
 using SteamConnectionInfoCore.Views;
 using System.Windows.Controls.Primitives;
+using System.Linq;
 
 namespace SteamConnectionInfoWpf
 {
@@ -22,13 +23,7 @@ namespace SteamConnectionInfoWpf
         public PlayerViewModel _playerViewModel;
         public MainWindow()
         {
-            InitializeComponent();
             _playerViewModel = new PlayerViewModel();
-        }
-
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
 
             bool mutexCreated;
             Mutex mutex = new Mutex(true, "SteamConnectionInfoWPFAppMutex", out mutexCreated);
@@ -45,23 +40,7 @@ namespace SteamConnectionInfoWpf
                 return;
             }
 
-            playersDataGrid.DataContext = _playerViewModel;
-
             ConfigurationService.Load();
-
-            Left = ConfigurationService.Get(config => config.WindowPositionX);
-            Top = ConfigurationService.Get(config => config.WindowPositionY);
-
-            int opacityToSet =  ConfigurationService.Get(config => config.WindowOpacity);
-            Opacity = opacityToSet / 100.0;
-            OpacityLabel.Content = $"{opacityToSet}%";
-            OpacitySlider.Value = opacityToSet;
-
-            ThreadRunHelper.RunInjectionThread();
-            ThreadRunHelper.RunSharedMemoryThread(this);
-
-            WindowServiceHelper.ShowHideWindow(this);
-            WindowServiceHelper.UnlockLockWindow(this);
 
             KeyService.RegisterGlobalKeyPress((key) =>
             {
@@ -76,6 +55,41 @@ namespace SteamConnectionInfoWpf
                     return;
                 }
             });
+
+            InitializeComponent();
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Left = ConfigurationService.Get(config => config.WindowPositionX);
+            Top = ConfigurationService.Get(config => config.WindowPositionY);
+
+            int opacityToSet = ConfigurationService.Get(config => config.WindowOpacity);
+            Opacity = opacityToSet / 100.0;
+            OpacityLabel.Content = $"{opacityToSet}%";
+            OpacitySlider.Value = opacityToSet;
+
+            ThreadRunHelper.RunInjectionThread();
+            ThreadRunHelper.RunSharedMemoryThread(this);
+
+            WindowServiceHelper.ShowHideWindow(this);
+            WindowServiceHelper.UnlockLockWindow(this);
+        }
+        private void PlayersDataGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            PlayersDataGrid.DataContext = _playerViewModel;
+
+            checkBoxIp.IsChecked = ConfigurationService.Get(config => config.ColumnIpEnabled);
+            checkBoxPort.IsChecked = ConfigurationService.Get(config => config.ColumnPortEnabled);
+            checkBoxRelay.IsChecked = ConfigurationService.Get(config => config.ColumnRelayEnabled);
+            checkBoxCountry.IsChecked = ConfigurationService.Get(config => config.ColumnCountryEnabled);
+            checkBoxName.IsChecked = ConfigurationService.Get(config => config.ColumnNameEnabled);
+
+            WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxIp, (bool)checkBoxIp.IsChecked);
+            WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxPort, (bool)checkBoxPort.IsChecked);
+            WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxRelay, (bool)checkBoxRelay.IsChecked);
+            WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxCountry, (bool)checkBoxCountry.IsChecked);
+            WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxName, (bool)checkBoxName.IsChecked);
         }
 
         private void OpacitySlider_DragCompleted(object sender, DragCompletedEventArgs e)
@@ -162,6 +176,27 @@ namespace SteamConnectionInfoWpf
             ConfigurationService.Upsert(config => config.WindowOpacity, opacity);
         }
 
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            var checkbox = sender as CheckBox;
+
+            if(checkbox == null) 
+                return;
+
+            WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkbox, true);
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            var checkbox = sender as CheckBox;
+
+            if (checkbox == null)
+                return;
+
+            WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkbox, false);
+        }
+
+   
         public static class WindowServiceHelper        
         {
             private static bool WindowHiddenLoaded              = false;
@@ -182,6 +217,7 @@ namespace SteamConnectionInfoWpf
 
                 WindowHiddenLoaded = true;
             }
+
             public static void UnlockLockWindow(MainWindow mainWindow)
             {
                 if (WindowTransparentForInputLoaded)
@@ -199,7 +235,7 @@ namespace SteamConnectionInfoWpf
                     mainWindow.windowLockLabel.Content = "LOCKED";
                     mainWindow.windowLockLabel.Foreground = Brushes.LightGray;
                     mainWindow.ResizeMode = ResizeMode.NoResize;
-                    mainWindow.playersDataGrid.UnselectAll();
+                    mainWindow.PlayersDataGrid.UnselectAll();
                 }
                 else
                 {
@@ -212,6 +248,42 @@ namespace SteamConnectionInfoWpf
                 mainWindow.UpdateLayout();
 
                 WindowTransparentForInputLoaded = true;
+            }
+
+            public static void ShowOrHideColumn(DataGrid playersDataGrid, CheckBox checkbox, bool show)
+            {
+                if(playersDataGrid == null) 
+                    return; 
+
+                if(!playersDataGrid.IsLoaded) 
+                    return;
+
+                string header = checkbox.Content?.ToString() ?? "";
+                DataGridColumn? column = playersDataGrid.Columns.FirstOrDefault(c => (c.Header ?? "").ToString() == header);
+
+                if (column != null)
+                {
+                    column.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+
+                    switch (header)
+                    {
+                        case "IP":
+                            ConfigurationService.Upsert(config => config.ColumnIpEnabled, show);
+                            break;
+                        case "PORT":
+                            ConfigurationService.Upsert(config => config.ColumnPortEnabled, show);
+                            break;
+                        case "RELAY":
+                            ConfigurationService.Upsert(config => config.ColumnRelayEnabled, show);
+                            break;
+                        case "COUNTRY":
+                            ConfigurationService.Upsert(config => config.ColumnCountryEnabled, show);
+                            break;
+                        case "NAME":
+                            ConfigurationService.Upsert(config => config.ColumnNameEnabled, show);
+                            break;
+                    }
+                }
             }
         }
 

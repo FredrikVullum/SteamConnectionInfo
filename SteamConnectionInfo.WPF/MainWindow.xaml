@@ -10,7 +10,7 @@
         Title="MainWindow" 
         SnapsToDevicePixels="False"
         Height="195" 
-        Width="500"
+        Width="475"
         Topmost="True"
         AllowsTransparency="True"
         WindowStyle="None"
@@ -18,6 +18,7 @@
         Focusable="False"
         ResizeMode="CanResizeWithGrip"
         ShowInTaskbar="False"
+        Loaded="MainWindow_Loaded"
     >
 
     <Window.Resources>
@@ -36,7 +37,7 @@
         </Border>
 
         <DataGrid 
-            x:Name="playersDataGrid"
+            x:Name="PlayersDataGrid"
             Grid.Row="1"
             BorderThickness="0"
             Background="#333333"
@@ -53,6 +54,7 @@
             CanUserSortColumns="False"
             GridLinesVisibility="None"
             Focusable="False"
+            Loaded="PlayersDataGrid_Loaded"
             FontFamily="{StaticResource GlobalFont}">
 
             <DataGrid.RowStyle>
@@ -104,9 +106,9 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Width="110" Header="IP" Binding="{Binding SteamIp, Converter={StaticResource UIntToIPAddressConverter}}" />
-                <DataGridTextColumn Width="50" Header="PORT" Binding="{Binding SteamPort}" />
+                <DataGridTextColumn Width="70" Header="PORT" Binding="{Binding SteamPort}" />
                 <DataGridTextColumn Width="50" Header="RELAY" Binding="{Binding SteamRelay}" />
-                <DataGridTextColumn Width="80" Header="COUNTRY" Binding="{Binding Country}" />
+                <DataGridTextColumn Width="130" Header="COUNTRY" Binding="{Binding Country}" />
                 <DataGridTextColumn Width="*" Header="NAME" Binding="{Binding SteamName}" />
             </DataGrid.Columns>
         </DataGrid>
@@ -155,7 +157,16 @@
                             </StackPanel>
                         </MenuItem.Items>
                     </MenuItem>
-
+                    <MenuItem Header="COLUMNS">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-list-24.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                        <CheckBox Name="checkBoxIp" Content="IP" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        <CheckBox Name="checkBoxPort" Content="PORT" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        <CheckBox Name="checkBoxRelay" Content="RELAY" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        <CheckBox Name="checkBoxCountry" Content="COUNTRY" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        <CheckBox Name="checkBoxName" Content="NAME" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                    </MenuItem>
                     <MenuItem Header="EXIT" Click="MenuItemExit_Click">
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Images/icons8-close-24.png" Width="16" Height="16"/>
@@ -167,4 +178,4 @@
         
     </Grid>
 </Window>
-    
+
