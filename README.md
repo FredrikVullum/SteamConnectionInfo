@@ -15,7 +15,7 @@ You have two options:
 
 1. Clone the repository and build it yourself. Publish it and copy the files at \bin\x86\Release\net6.0-windows\publish\win-x86 to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
 
-2. Download the ZIP file from Releases and extract the contents to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
+2. Download the SCI.zip from [Releases](https://github.com/FredrikVullum/SteamConnectionInfo/releases) and extract the contents to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
 
 Keep in mind that you need .NET to run the executable if you don't have it already.
 
