@@ -54,5 +54,3 @@ Add functionality to set your own keybindings for locking/unlocking and hiding/s
 Add functionality to change the overlay style and font
 
 Add functionality to close P2P session based on player latency and/or country?
-
-Add functionality to save all players you have played with in a file
