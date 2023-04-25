@@ -1,5 +1,4 @@
 # Steam Connection Info
-Steam Connection Info is solution made for Windows that displays extra data about players you are playing with in multiplayer Steam games that use P2P.
 
 Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
