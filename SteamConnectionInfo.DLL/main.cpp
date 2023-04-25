@@ -1,6 +1,4 @@
-#include "models/player.h"
-#include "models/player_serializer.h"
-
+#include "helpers/PlayerSerializer.h"
 #include "helpers/VirtualMethodTableHooker.h"
 #include "helpers/SignatureFinder.h"
 #include "helpers/SharedMemoryProducer.h"
@@ -9,8 +7,8 @@
 #include "hooks/GetFriendPersonaName.h"
 #include "hooks/SendP2PPacket.h"
 
-namespace Hooks {
-
+namespace Hooks 
+{
 	std::unique_ptr<VirtualMethodTableHooker> SteamNetworkingHooker = nullptr;
 	SendP2PPacket_t		 SendP2PPacket = nullptr;
 
@@ -71,7 +69,8 @@ namespace Hooks {
 		}
 	} 
 
-	void Initialize() {
+	void Initialize() 
+	{
 		DWORD steamclient = 0;
 
 		while (!steamclient) {
@@ -102,7 +101,8 @@ namespace Hooks {
 	}
 
 	ISteamFriends* SteamFriends = nullptr;
-	const char* __fastcall GetFriendPersonaName_Hook(ISteamFriends* thisptr, void* edx, CSteamID steamIDFriend) {
+	const char* __fastcall GetFriendPersonaName_Hook(ISteamFriends* thisptr, void* edx, CSteamID steamIDFriend) 
+	{
 		if (thisptr && thisptr != SteamFriends) {
 			SteamFriends = thisptr;
 		}

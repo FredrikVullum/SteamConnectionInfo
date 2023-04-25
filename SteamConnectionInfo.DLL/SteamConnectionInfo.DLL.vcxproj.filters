@@ -14,7 +14,7 @@
     <ClInclude Include="helpers\VirtualMethodTableHooker.h" />
     <ClInclude Include="helpers\SignatureFinder.h" />
     <ClInclude Include="models\player.h" />
-    <ClInclude Include="models\player_serializer.h" />
+    <ClInclude Include="helpers\PlayerSerializer.h" />
     <ClInclude Include="helpers\SharedMemoryProducer.h" />
     <ClInclude Include="helpers\IpToCountryResolver.h" />
     <ClInclude Include="packages\include\nlohmann\json.hpp" />

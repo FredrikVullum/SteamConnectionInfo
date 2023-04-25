@@ -1,7 +1,7 @@
 #pragma once
 #include <nlohmann/json.hpp>
 #include <vector>
-#include "player.h"
+#include "../models/player.h"
 
 using json = nlohmann::json;
 

@@ -114,7 +114,7 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
     <ClInclude Include="hooks\GetFriendPersonaName.h" />
     <ClInclude Include="hooks\SendP2PPacket.h" />
     <ClInclude Include="models\player.h" />
-    <ClInclude Include="models\player_serializer.h" />
+    <ClInclude Include="helpers\PlayerSerializer.h" />
     <ClInclude Include="packages\include\curl\curl.h" />
     <ClInclude Include="packages\include\curl\curlver.h" />
     <ClInclude Include="packages\include\curl\easy.h" />
