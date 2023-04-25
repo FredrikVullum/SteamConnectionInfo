@@ -44,7 +44,7 @@ SteamConnectionInfo.WPF is a C# project that contains the main executable which 
 
 **TODO**
 
-Add Latency column that shows a player's latency in the overlay
+Add Latency column that shows the latency between you and a player in the overlay
 
 Add support for games using newer SteamNetworkingMessages interface for P2P
 
