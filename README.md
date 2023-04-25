@@ -9,7 +9,17 @@ Steam Connection Info currently only supports games that are using the old Steam
 
 DLL from SteamConnectionInfo.DLL is automatically injected into steam.exe. For the DLL injection to work properly SteamConnectionInfo.WPF and DLL from SteamConnectionInfo.DLL must be compiled to x86. DLL from SteamConnectionInfo.DLL also needs to be in the same folder as SteamConnectionInfo.WPF.exe
 
-**USAGE/HINTS**
+**HOW TO USE**
+
+You have two options:
+
+1. Clone the repository and build it yourself. Publish it and copy the files at \bin\x86\Release\net6.0-windows\publish\win-x86 to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
+
+2. Download the ZIP file from Releases and extract the contents to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
+
+Keep in mind that you need .NET to run the executable if you don't have it already.
+
+**HINTS**
 
 Press Insert to lock the window, making it transparent for all input. Press insert again to unlock so you can move the window around and interact with it.
 
@@ -27,7 +37,7 @@ SteamConnectionInfo.DLL is a C++ project that builds the DLL.
 
 SteamConnectionInfo.Core is a C# class library that contains functions necessary for SteamConnectionInfo.WPF
 
-SteamConnectionInfo.WPF is a C# project that contains the main executable which shows the overlay, interacts with the dll, etc.
+SteamConnectionInfo.WPF is a C# project that contains the main executable which shows the overlay, interacts with the DLL, etc.
 
 **TODO**
 
