@@ -44,6 +44,7 @@ namespace SteamConnectionInfoCore.Views
                 existingPlayer.SteamName = player.SteamName;
                 existingPlayer.SteamId = player.SteamId;
                 existingPlayer.SteamRelay = player.SteamRelay;
+                existingPlayer.Country = player.Country;
             }
             else
             {

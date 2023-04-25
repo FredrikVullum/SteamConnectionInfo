@@ -19,6 +19,9 @@ namespace SteamConnectionInfoCore.Models
         [JsonProperty("steam_relay")]
         public byte SteamRelay { get; set; }
 
+        [JsonProperty("country")]
+        public string Country { get; set; }
+
         public Player()
         {
             SteamIp = 43634546;
@@ -26,11 +29,12 @@ namespace SteamConnectionInfoCore.Models
             SteamName = "aewrewar";
             SteamId = 54645645654;
             SteamRelay = 1;
+            Country = "Unknown";
         }
 
         public override string ToString()
         {
-            return $"Steam IP: {SteamIp}, Port: {SteamPort}, Name: {SteamName}, ID: {SteamId}, Relay: {SteamRelay}";
+            return $"Steam IP: {SteamIp}, Port: {SteamPort}, Name: {SteamName}, ID: {SteamId}, Relay: {SteamRelay}, Country: {Country}";
         }
     }
 }
