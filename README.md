@@ -3,6 +3,7 @@ Steam Connection Info is solution made for Windows that displays extra data abou
 
 Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
+![Example Image](25.04.2023.jpg)
 **HOW TO DOWNLOAD**
 
 You have two options:
