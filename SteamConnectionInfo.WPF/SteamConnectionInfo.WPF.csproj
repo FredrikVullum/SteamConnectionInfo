@@ -6,7 +6,7 @@
     <RootNamespace>SteamConnectionInfoWpf</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Platforms>AnyCPU;x86</Platforms>
+    <Platforms>x86</Platforms>
     <AssemblyName>SteamConnectionInfo.WPF</AssemblyName>
     <ApplicationIcon>SteamConnectionInfoIcon.ico</ApplicationIcon>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
