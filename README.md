@@ -23,8 +23,6 @@ SteamConnectionInfo.WPF injects the SteamConnectionInfo DLL into steam.exe and t
 
 **TODO**
 
-Add functionality to hide/show specific columns like IP, Country, Relay, etc. in the overlay
-
 Add Latency column that shows a player's latency in the overlay
 
 Add support for games using newer SteamNetworkingMessages interface for P2P
@@ -33,8 +31,8 @@ Fix the Opacity slider background in the tray menu
 
 Add functionality to set your own keybindings for locking/unlocking and hiding/showing the overlay
 
-Add functionality to change overlay style and font of the overlay
+Add functionality to change the overlay style and font
 
-Add functionality to close P2P session based on player latency and/or country
+Add functionality to close P2P session based on player latency and/or country?
 
 Add functionality to save all players you have played with in a file
