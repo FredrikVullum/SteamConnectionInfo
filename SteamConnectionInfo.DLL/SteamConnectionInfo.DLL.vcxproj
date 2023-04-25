@@ -66,7 +66,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>Q:\Visual Studio 2022 Projects\C#\SteamConnectionInfo\SteamConnectionInfo.DLL\packages\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib;crypt32.lib;ws2_32.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x86\$(Configuration)\net6.0-windows\"</Command>
