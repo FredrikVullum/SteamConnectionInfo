@@ -5,6 +5,12 @@ Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
 ![Example Image](25.04.2023.jpg)
 
+**IMPORTANT**
+
+Steam Connection Info only works with games that utilize the older [SteamNetworking](https://partner.steamgames.com/doc/api/ISteamNetworking) API.
+
+I plan on adding support for the newer [SteamNetworkingMessages](https://partner.steamgames.com/doc/api/ISteamNetworkingMessages) API in the future.
+
 **HOW TO DOWNLOAD**
 
 You have two options:
