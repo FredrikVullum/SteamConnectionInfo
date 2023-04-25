@@ -3,13 +3,7 @@ Steam Connection Info is solution for Windows made for displaying extra data abo
 
 Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
-**IMPORTANT:**
-
-Steam Connection Info currently only supports games that are using the old SteamNetworking interface for P2P. Tested and works with Elden Ring, for example.
-
-DLL from SteamConnectionInfo.DLL is automatically injected into steam.exe. For the DLL injection to work properly SteamConnectionInfo.WPF and DLL from SteamConnectionInfo.DLL must be compiled to x86. DLL from SteamConnectionInfo.DLL also needs to be in the same folder as SteamConnectionInfo.WPF.exe
-
-**HOW TO USE**
+**HOW TO DOWNLOAD**
 
 You have two options:
 
@@ -17,7 +11,8 @@ You have two options:
 
 2. Download the SCI.zip from [Releases](https://github.com/FredrikVullum/SteamConnectionInfo/releases) and extract the contents to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
 
-Keep in mind that you need .NET to run the executable if you don't have it already.
+You need .NET to run the executable if you don't have it already. SteamConnectionInfo.dll must also be in the same folder as SteamConnectionInfo.WPF.exe.
+If you build it yourself both SteamConnectionInfo.dll and SteamConnectionInfo.WPF.exe must target x86.
 
 **HINTS**
 
@@ -25,13 +20,13 @@ Press Insert to lock the window, making it transparent for all input. Press inse
 
 Press Home to hide the window. Press Home again to show it.
 
-Control the window's opacity by right clicking on the tray icon -> Opacity -> Drag the slider
+Right click on the tray icon to access other functionality like hiding columns, changing the window opacity, etc.
 
 **HOW DOES IT WORK?**
 
 SteamConnectionInfo.WPF injects the DLL from SteamConnectionInfo.DLL into steam.exe and this DLL hooks the function [ReadP2PPacket()](https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket) which is found in the steamclient module and uses this to establish a connection between Steam ID and IP address. DLL from SteamConnectionInfo.DLL communicates with SteamConnectionInfo.WPF through shared memory so that SteamConnectionInfo.WPF can receive data about the players and show it to you in the overlay.
 
-**STRUCTURE**
+**SOLUTION STRUCTURE**
 
 SteamConnectionInfo.DLL is a C++ project that builds the DLL.
 
