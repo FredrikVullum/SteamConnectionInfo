@@ -9,8 +9,6 @@
         mc:Ignorable="d"
         Title="MainWindow" 
         SnapsToDevicePixels="False"
-        Height="195" 
-        Width="475"
         Topmost="True"
         AllowsTransparency="True"
         WindowStyle="None"
@@ -19,6 +17,7 @@
         ResizeMode="CanResizeWithGrip"
         ShowInTaskbar="False"
         Loaded="MainWindow_Loaded"
+        SizeChanged="Window_SizeChanged"
     >
 
     <Window.Resources>
@@ -32,7 +31,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Background="#474747" Width="Auto" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MouseDown="Border_MouseDown">
+        <Border Name="borderTop" Grid.Row="0" Background="#474747" Width="Auto" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MouseDown="Border_MouseDown">
             <Label Content="STEAM CONNECTION INFO 1.0" FontFamily="{StaticResource GlobalFont}" FontSize="13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Border>
 
@@ -116,15 +115,18 @@
         <Border Grid.Row="2" Background="#474747" Width="Auto" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MouseDown="Border_MouseDown">
             <StackPanel Orientation="Horizontal">
                 <Label Name="windowLockLabel" Content="UNLOCKED" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Label Name="separatorLabel" Content="-" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Label Name="numPlayersLabel" Content="0 " FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Label Name="numPlayersHelperLabel" Content="PLAYER(S)" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-5, 0, 0, 0"/>
+                <Label Name="separatorLabel1" Content="-" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="numPlayersLabel" Content="0" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="numPlayersHelperLabel" Content="PLAYER(S)" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0, 0, 0, 0"/>
+                <Label Name="separatorLabel2" Content="-" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="dllStatusLabel" Content="UNLOADED" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </StackPanel>
+            
         </Border>
 
         <n:TaskbarIcon x:Name="SciGuiNotifyIcon" IconSource="pack://application:,,,/SteamConnectionInfoIcon.ico" ToolTipText="Steam Connection Info">
             <n:TaskbarIcon.ContextMenu >
-                <ContextMenu>
+                <ContextMenu HasDropShadow="False">
                     <MenuItem Header="UNLOCK/LOCK WINDOW" Click="MenuItemLock_Click">
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Images/icons8-privacy-24.png" Width="16" Height="16"/>
@@ -141,15 +143,15 @@
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Images/icons8-opacity-24.png" Width="16" Height="16"/>
                         </MenuItem.Icon>
-                        
+
                         <MenuItem.ItemContainerStyle>
                             <Style TargetType="{x:Type MenuItem}">
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Setter Property="BorderBrush" Value="Transparent"/>
                             </Style>
                         </MenuItem.ItemContainerStyle>
-                        
-                        
+
+
                         <MenuItem.Items>
                             <StackPanel x:Name="OpacityStackPanel" Orientation="Vertical">
                                 <Slider x:Name="OpacitySlider" Minimum="1" Maximum="100" Value="80" Margin="-30, 5, -45, 0" Width="200" TickFrequency="1" TickPlacement="None" Thumb.DragCompleted="OpacitySlider_DragCompleted" ValueChanged="OpacitySlider_ValueChanged"/>
@@ -157,16 +159,30 @@
                             </StackPanel>
                         </MenuItem.Items>
                     </MenuItem>
+                    
                     <MenuItem Header="COLUMNS">
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Images/icons8-list-24.png" Width="16" Height="16"/>
                         </MenuItem.Icon>
-                        <CheckBox Name="checkBoxIp" Content="IP" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                        <CheckBox Name="checkBoxPort" Content="PORT" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                        <CheckBox Name="checkBoxRelay" Content="RELAY" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                        <CheckBox Name="checkBoxCountry" Content="COUNTRY" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                        <CheckBox Name="checkBoxName" Content="NAME" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        <CheckBox Name="checkBoxIp" Content="IP" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
+                        <CheckBox Name="checkBoxPort" Content="PORT" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
+                        <CheckBox Name="checkBoxRelay" Content="RELAY" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
+                        <CheckBox Name="checkBoxCountry" Content="COUNTRY" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
+                        <CheckBox Name="checkBoxName" Content="NAME" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
                     </MenuItem>
+
+                    <MenuItem Header="MISCELLANEOUS">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-tools-24.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+
+                        <CheckBox Name="checkBoxLogging" Content="Save players to log file" IsChecked="False" Checked="CheckBoxLog_Checked" Unchecked="CheckBoxLog_Unchecked"/>
+                        <CheckBox Name="checkBoxFilterCountry" Content="Enable country filter" IsChecked="False" Checked="CheckBoxFilterCountry_Checked" Unchecked="CheckBoxFilterCountry_Unchecked"/>
+                        <CheckBox Name="checkBoxFilterLatency" Content="Enable latency filter" IsChecked="False" Checked="CheckBoxFilterLatency_Checked" Unchecked="CheckBoxFilterLatency_Unchecked"/>
+                    </MenuItem>
+
+                    <Separator></Separator>
+
                     <MenuItem Header="EXIT" Click="MenuItemExit_Click">
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Images/icons8-close-24.png" Width="16" Height="16"/>

@@ -23,10 +23,14 @@
     <None Remove="icons8-privacy-24.png" />
     <None Remove="icons8-show-property-24.png" />
     <None Remove="Images\icons8-list-24.png" />
+    <None Remove="Images\icons8-tools-24.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Images\icons8-list-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\icons8-tools-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="SteamConnectionInfoIcon.ico">

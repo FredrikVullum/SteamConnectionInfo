@@ -5,14 +5,16 @@ namespace SteamConnectionInfoCore.Services
 {
     public static class DynamicLinkLibraryInjectionService
     {
-        private const uint PROCESS_CREATE_THREAD     = 0x0002;
-        private const uint PROCESS_QUERY_INFORMATION = 0x0400;
-        private const uint PROCESS_VM_OPERATION      = 0x0008;
-        private const uint PROCESS_VM_WRITE          = 0x0020;
-        private const uint PROCESS_VM_READ           = 0x0010;
-        private const uint MEM_COMMIT                = 0x00001000;
-        private const uint MEM_RESERVE               = 0x00002000;
-        private const uint PAGE_READWRITE            = 0x04;
+        public static bool  IsDllInjected             = false;
+
+        private const uint  PROCESS_CREATE_THREAD     = 0x0002;
+        private const uint  PROCESS_QUERY_INFORMATION = 0x0400;
+        private const uint  PROCESS_VM_OPERATION      = 0x0008;
+        private const uint  PROCESS_VM_WRITE          = 0x0020;
+        private const uint  PROCESS_VM_READ           = 0x0010;
+        private const uint  MEM_COMMIT                = 0x00001000;
+        private const uint  MEM_RESERVE               = 0x00002000;
+        private const uint  PAGE_READWRITE            = 0x04;
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetModuleHandle(string? lpModuleName);
@@ -29,6 +31,8 @@ namespace SteamConnectionInfoCore.Services
 
         public static void Inject()
         {
+            IsDllInjected = false;
+
             Process? steamProcess = Process.GetProcessesByName("steam").FirstOrDefault();
 
             if (steamProcess == null)
@@ -47,6 +51,7 @@ namespace SteamConnectionInfoCore.Services
             {
                 if (string.Equals(module.FileName, dllPath, StringComparison.OrdinalIgnoreCase))
                 {
+                    IsDllInjected = true;
                     return;
                 }
             }

@@ -15,6 +15,7 @@ using SteamConnectionInfoCore.Models;
 using SteamConnectionInfoCore.Views;
 using System.Windows.Controls.Primitives;
 using System.Linq;
+using System.Timers;
 
 namespace SteamConnectionInfoWpf
 {
@@ -41,6 +42,7 @@ namespace SteamConnectionInfoWpf
             }
 
             ConfigurationService.Load();
+            LogService.Load();
 
             KeyService.RegisterGlobalKeyPress((key) =>
             {
@@ -56,11 +58,15 @@ namespace SteamConnectionInfoWpf
                 }
             });
 
+            Width = ConfigurationService.Get(config => config.WindowWidth);
+            Height = ConfigurationService.Get(config => config.WindowHeight);
+
             InitializeComponent();
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+           
             Left = ConfigurationService.Get(config => config.WindowPositionX);
             Top = ConfigurationService.Get(config => config.WindowPositionY);
 
@@ -69,11 +75,17 @@ namespace SteamConnectionInfoWpf
             OpacityLabel.Content = $"{opacityToSet}%";
             OpacitySlider.Value = opacityToSet;
 
-            ThreadRunHelper.RunInjectionThread();
+            ThreadRunHelper.RunInjectionThread(this);
             ThreadRunHelper.RunSharedMemoryThread(this);
 
             WindowServiceHelper.ShowHideWindow(this);
             WindowServiceHelper.UnlockLockWindow(this);
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ConfigurationService.Upsert(config => config.WindowWidth, Width);
+            ConfigurationService.Upsert(config => config.WindowHeight, Height);
         }
         private void PlayersDataGrid_Loaded(object sender, RoutedEventArgs e)
         {
@@ -90,7 +102,12 @@ namespace SteamConnectionInfoWpf
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxRelay, (bool)checkBoxRelay.IsChecked);
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxCountry, (bool)checkBoxCountry.IsChecked);
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxName, (bool)checkBoxName.IsChecked);
+
+            checkBoxLogging.IsChecked = ConfigurationService.Get(config => config.LoggingEnabled);
+            checkBoxFilterCountry.IsChecked = ConfigurationService.Get(config => config.CountryFilterEnabled);
+            checkBoxFilterLatency.IsChecked = ConfigurationService.Get(config => config.LatencyFilterEnabled);
         }
+
 
         private void OpacitySlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
@@ -118,6 +135,7 @@ namespace SteamConnectionInfoWpf
                     ResizeMode = System.Windows.ResizeMode.NoResize;
                     UpdateLayout();
                 }
+
                 DragMove();
 
                 ConfigurationService.Upsert(config => config.WindowPositionX, Left);
@@ -129,6 +147,7 @@ namespace SteamConnectionInfoWpf
                 ResizeMode = System.Windows.ResizeMode.CanResizeWithGrip;
                 UpdateLayout();
             }
+
 
             Keyboard.ClearFocus();
         }
@@ -175,8 +194,7 @@ namespace SteamConnectionInfoWpf
 
             ConfigurationService.Upsert(config => config.WindowOpacity, opacity);
         }
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void CheckBoxColumn_Checked(object sender, RoutedEventArgs e)
         {
             var checkbox = sender as CheckBox;
 
@@ -185,8 +203,7 @@ namespace SteamConnectionInfoWpf
 
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkbox, true);
         }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void CheckBoxColumn_Unchecked(object sender, RoutedEventArgs e)
         {
             var checkbox = sender as CheckBox;
 
@@ -195,12 +212,43 @@ namespace SteamConnectionInfoWpf
 
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkbox, false);
         }
+        private void CheckBoxLog_Checked(object sender, RoutedEventArgs e)
+        {
 
-   
+            ConfigurationService.Upsert(config => config.LoggingEnabled, true);
+        }
+        private void CheckBoxLog_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+            ConfigurationService.Upsert(config => config.LoggingEnabled, false);
+        }
+        private void CheckBoxFilterLatency_Checked(object sender, RoutedEventArgs e)
+        {
+
+            ConfigurationService.Upsert(config => config.LatencyFilterEnabled, true);
+        }
+        private void CheckBoxFilterLatency_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+            ConfigurationService.Upsert(config => config.LatencyFilterEnabled, false);
+        }
+        private void CheckBoxFilterCountry_Checked(object sender, RoutedEventArgs e)
+        {
+
+            ConfigurationService.Upsert(config => config.CountryFilterEnabled, true);
+        }
+        private void CheckBoxFilterCountry_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+            ConfigurationService.Upsert(config => config.CountryFilterEnabled, false);
+        }
+
         public static class WindowServiceHelper        
         {
             private static bool WindowHiddenLoaded              = false;
             private static bool WindowTransparentForInputLoaded = false;
+
+            public static bool WindowLocked = false;
             public static void ShowHideWindow(MainWindow mainWindow)
             {
                 if (WindowHiddenLoaded)
@@ -236,18 +284,21 @@ namespace SteamConnectionInfoWpf
                     mainWindow.windowLockLabel.Foreground = Brushes.LightGray;
                     mainWindow.ResizeMode = ResizeMode.NoResize;
                     mainWindow.PlayersDataGrid.UnselectAll();
+                    WindowLocked = true;
                 }
                 else
                 {
                     WindowService.SetWindowExNotTransparent(WindowHandle);
                     mainWindow.windowLockLabel.Content = "UNLOCKED";
-                    mainWindow.windowLockLabel.Foreground = Brushes.Lime;
+                    mainWindow.windowLockLabel.Foreground = Brushes.SkyBlue;
                     mainWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
+                    WindowLocked = false;
                 }
 
                 mainWindow.UpdateLayout();
 
                 WindowTransparentForInputLoaded = true;
+
             }
 
             public static void ShowOrHideColumn(DataGrid playersDataGrid, CheckBox checkbox, bool show)
@@ -289,14 +340,29 @@ namespace SteamConnectionInfoWpf
 
         public static class ThreadRunHelper
         {
-            public static void RunInjectionThread()
+            public static void RunInjectionThread(MainWindow mainWindow)
             {
                 Task.Run(() =>
                 {
                     while (true)
                     {
                         DynamicLinkLibraryInjectionService.Inject();
-                        Thread.Sleep(2000);
+
+                        mainWindow.Dispatcher.Invoke(() =>
+                        {
+                            if (DynamicLinkLibraryInjectionService.IsDllInjected)
+                            {
+                                mainWindow.dllStatusLabel.Content = "LOADED";
+                                mainWindow.dllStatusLabel.Foreground = Brushes.Lime;
+                            }
+                            else
+                            {
+                                mainWindow.dllStatusLabel.Content = "UNLOADED";
+                                mainWindow.dllStatusLabel.Foreground = Brushes.Red;
+                            }
+                        });
+
+                        Thread.Sleep(1000);
                     }
                 });
             }
@@ -329,10 +395,16 @@ namespace SteamConnectionInfoWpf
                                 }
                                 else
                                 {
-
                                     mainWindow._playerViewModel.MergePlayers(players);
                                     mainWindow.numPlayersLabel.Content = mainWindow._playerViewModel.Players.Count.ToString();
 
+                                    if(mainWindow.checkBoxLogging.IsChecked == true)
+                                    {
+                                        foreach (var player in mainWindow._playerViewModel.Players)
+                                        {
+                                            LogService.Insert(player);
+                                        }
+                                    }
                                 }
                             });
                         }
