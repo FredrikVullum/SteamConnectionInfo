@@ -65,7 +65,7 @@ namespace Hooks
 				playersMutex.unlock();
 			}
 
-			Sleep(1500);
+			Sleep(1000);
 		}
 	} 
 
