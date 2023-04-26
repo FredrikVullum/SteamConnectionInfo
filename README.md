@@ -1,4 +1,4 @@
-# Steam Connection Info
+# SteamConnectionInfo
 
 Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
