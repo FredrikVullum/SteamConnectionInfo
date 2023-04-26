@@ -99,8 +99,9 @@
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     <Setter Property="FontSize" Value="13"/>
+                    <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                    <Setter Property="BorderBrush" Value="#777777"/>
                 </Style>
-
             </DataGrid.ColumnHeaderStyle>
 
             <DataGrid.Columns>
@@ -108,18 +109,28 @@
                 <DataGridTextColumn Width="70" Header="PORT" Binding="{Binding SteamPort}" />
                 <DataGridTextColumn Width="50" Header="RELAY" Binding="{Binding SteamRelay}" />
                 <DataGridTextColumn Width="130" Header="COUNTRY" Binding="{Binding Country}" />
-                <DataGridTextColumn Width="*" Header="NAME" Binding="{Binding SteamName}" />
+                <DataGridTextColumn Width="*" Header="NAME" Binding="{Binding SteamName}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#575757"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="13"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,0"/>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
         <Border Grid.Row="2" Background="#474747" Width="Auto" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MouseDown="Border_MouseDown">
             <StackPanel Orientation="Horizontal">
                 <Label Name="windowLockLabel" Content="UNLOCKED" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Label Name="separatorLabel1" Content="-" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Label Name="numPlayersLabel" Content="0" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Label Name="numPlayersHelperLabel" Content="PLAYER(S)" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0, 0, 0, 0"/>
-                <Label Name="separatorLabel2" Content="-" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Label Name="dllStatusLabel" Content="UNLOADED" FontFamily="{StaticResource GlobalFont}" FontSize="11" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="separatorLabel1" Content="|" FontFamily="{StaticResource GlobalFont}" FontSize="11" Margin="-5, 0, 0, 0" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="numPlayersLabel" Content="0" FontFamily="{StaticResource GlobalFont}" FontSize="11" Margin="-5, 0, 0, 0" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="numPlayersHelperLabel" Content="PLAYER(S)" FontFamily="{StaticResource GlobalFont}" Margin="-3, 0, 0, 0" FontSize="11" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="separatorLabel2" Content="|" FontFamily="{StaticResource GlobalFont}" FontSize="11" Margin="-5, 0, 0, 0" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Name="dllStatusLabel" Content="UNLOADED" FontFamily="{StaticResource GlobalFont}" FontSize="11" Margin="-5, 0, 0, 0" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </StackPanel>
             
         </Border>
