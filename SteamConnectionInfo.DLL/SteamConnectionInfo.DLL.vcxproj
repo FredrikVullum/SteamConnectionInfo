@@ -56,17 +56,18 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)packages\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)packages\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libcurl.lib;crypt32.lib;ws2_32.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib;crypt32.lib;ws2_32.lib;zlib.lib;Packet.lib;wpcap.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -80,7 +81,7 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
@@ -93,7 +94,7 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libcurl.lib;crypt32.lib;ws2_32.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib;crypt32.lib;ws2_32.lib;zlib.lib;Packet.lib;wpcap.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)packages\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -108,6 +109,7 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helpers\IpToCountryResolver.h" />
+    <ClInclude Include="helpers\LatencyMonitor.h" />
     <ClInclude Include="helpers\SharedMemoryProducer.h" />
     <ClInclude Include="helpers\SignatureFinder.h" />
     <ClInclude Include="helpers\VirtualMethodTableHooker.h" />
@@ -129,6 +131,25 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
     <ClInclude Include="packages\include\curl\websockets.h" />
     <ClInclude Include="packages\include\curl\zconf.h" />
     <ClInclude Include="packages\include\curl\zlib.h" />
+    <ClInclude Include="packages\include\Packet32.h" />
+    <ClInclude Include="packages\include\pcap-bpf.h" />
+    <ClInclude Include="packages\include\pcap-namedb.h" />
+    <ClInclude Include="packages\include\pcap.h" />
+    <ClInclude Include="packages\include\pcap\bluetooth.h" />
+    <ClInclude Include="packages\include\pcap\bpf.h" />
+    <ClInclude Include="packages\include\pcap\can_socketcan.h" />
+    <ClInclude Include="packages\include\pcap\compiler-tests.h" />
+    <ClInclude Include="packages\include\pcap\dlt.h" />
+    <ClInclude Include="packages\include\pcap\funcattrs.h" />
+    <ClInclude Include="packages\include\pcap\ipnet.h" />
+    <ClInclude Include="packages\include\pcap\namedb.h" />
+    <ClInclude Include="packages\include\pcap\nflog.h" />
+    <ClInclude Include="packages\include\pcap\pcap-inttypes.h" />
+    <ClInclude Include="packages\include\pcap\pcap.h" />
+    <ClInclude Include="packages\include\pcap\sll.h" />
+    <ClInclude Include="packages\include\pcap\socket.h" />
+    <ClInclude Include="packages\include\pcap\usb.h" />
+    <ClInclude Include="packages\include\pcap\vlan.h" />
     <ClInclude Include="steam\CSteamID.h" />
     <ClInclude Include="steam\ISteamFriends.h" />
     <ClInclude Include="steam\ISteamNetworking.h" />

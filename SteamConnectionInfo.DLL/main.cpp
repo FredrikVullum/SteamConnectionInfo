@@ -3,6 +3,7 @@
 #include "helpers/SignatureFinder.h"
 #include "helpers/SharedMemoryProducer.h"
 #include "helpers/IpToCountryResolver.h"
+#include "helpers/LatencyMonitor.h"
 
 #include "hooks/GetFriendPersonaName.h"
 #include "hooks/SendP2PPacket.h"
@@ -20,10 +21,18 @@ namespace Hooks
 
 	SharedMemoryProducer producer;
 
+
+	void PacketMonitoringThread() {
+		LatencyMonitor::Run(&players, &playersMutex);
+	}
+	
+
 	void Run() {
 		if (!producer.Initialize("SteamConnectionInfoSharedMemoryRegion", 4096))
 			return;
 
+		CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)PacketMonitoringThread, NULL, NULL, NULL);
+		
 		while (true) 
 		{
 			auto current_time = std::chrono::steady_clock::now();
@@ -96,6 +105,9 @@ namespace Hooks
 		GetFriendPersonaName = (GetFriendPersonaName_t)SteamFriendsHooker->Hook(13, GetFriendPersonaName_Hook);
 		if (!GetFriendPersonaName)
 			return;
+
+		AllocConsole();
+		freopen("CONOUT$", "w", stdout);
 
 		Run();
 	}
@@ -184,7 +196,7 @@ namespace Hooks
 
 		FreeLibraryAndExitThread(GetModuleHandle(NULL), 0);
 	}
-}
+};
 
 BOOL WINAPI DllMain(HINSTANCE handle, DWORD reason, LPVOID reserved)  // reserved
 {

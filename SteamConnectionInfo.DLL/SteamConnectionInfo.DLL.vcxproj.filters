@@ -32,6 +32,26 @@
     <ClInclude Include="packages\include\curl\websockets.h" />
     <ClInclude Include="packages\include\curl\zconf.h" />
     <ClInclude Include="packages\include\curl\zlib.h" />
+    <ClInclude Include="helpers\LatencyMonitor.h" />
+    <ClInclude Include="packages\include\pcap\bluetooth.h" />
+    <ClInclude Include="packages\include\pcap\bpf.h" />
+    <ClInclude Include="packages\include\pcap\can_socketcan.h" />
+    <ClInclude Include="packages\include\pcap\compiler-tests.h" />
+    <ClInclude Include="packages\include\pcap\dlt.h" />
+    <ClInclude Include="packages\include\pcap\funcattrs.h" />
+    <ClInclude Include="packages\include\pcap\ipnet.h" />
+    <ClInclude Include="packages\include\pcap\namedb.h" />
+    <ClInclude Include="packages\include\pcap\nflog.h" />
+    <ClInclude Include="packages\include\pcap\pcap.h" />
+    <ClInclude Include="packages\include\pcap\pcap-inttypes.h" />
+    <ClInclude Include="packages\include\pcap\sll.h" />
+    <ClInclude Include="packages\include\pcap\socket.h" />
+    <ClInclude Include="packages\include\pcap\usb.h" />
+    <ClInclude Include="packages\include\pcap\vlan.h" />
+    <ClInclude Include="packages\include\Packet32.h" />
+    <ClInclude Include="packages\include\pcap.h" />
+    <ClInclude Include="packages\include\pcap-bpf.h" />
+    <ClInclude Include="packages\include\pcap-namedb.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="packages\lib\libcurl.lib" />
