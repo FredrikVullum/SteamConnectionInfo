@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/SteamConnectionInfo.DLL/packages/lib/Pcap++.lib
+/SteamConnectionInfo.DLL/packages/lib/Packet++.lib
+/SteamConnectionInfo.DLL/packages/lib/Common++.lib
+/SteamConnectionInfo.DLL/packages/lib/wpcap.lib
+/SteamConnectionInfo.DLL/packages/lib/Packet.lib
