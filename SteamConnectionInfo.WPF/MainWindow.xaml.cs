@@ -321,7 +321,7 @@ namespace SteamConnectionInfoWpf
                         case "IP":
                             ConfigurationService.Upsert(config => config.ColumnIpEnabled, show);
                             break;
-                        case "LATENCY":
+                        case "PING":
                             ConfigurationService.Upsert(config => config.ColumnPingEnabled, show);
                             break;
                         case "RELAY":
