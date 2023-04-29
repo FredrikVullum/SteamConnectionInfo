@@ -30,17 +30,17 @@ If you get an error when starting SteamConnectionInfo.WPF.exe it most likely mea
 
 **HINTS**
 
+Right click on the tray icon on your taskbar to access other functionality like hiding columns, changing the window opacity, etc.
+
 Press Insert to lock the window, making it transparent for all input. Press insert again to unlock so you can move the window around and interact with it.
 
 Press Home to hide the window. Press Home again to show it.
-
-Right click on the tray icon to access other functionality like hiding columns, changing the window opacity, etc.
 
 **HOW DOES IT WORK?**
 
 SteamConnectionInfo.WPF injects the DLL from SteamConnectionInfo.DLL into steam.exe and this DLL hooks the function [ReadP2PPacket()](https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket) which is found in the steamclient module and uses this to establish a connection between Steam ID and IP address. DLL from SteamConnectionInfo.DLL communicates with SteamConnectionInfo.WPF through shared memory so that SteamConnectionInfo.WPF can receive data about the players and show it to you in the overlay.
 
-SteamConnectionInfo.DLL uses npcap to monitor packets to measure pings, curl for accessing ip-api.com for resolving IP addresses to country, and nlohmann for working with JSON.
+SteamConnectionInfo.DLL uses npcap to monitor packets to measure pings, curl for accessing ip-api.com for resolving IP addresses to country, and nlohmann for serializing players to JSON in C++.
 
 **SOLUTION STRUCTURE**
 
