@@ -18,8 +18,8 @@ namespace SteamConnectionInfoWpf
 {
     public partial class MainWindow : Window
     {
-        public         PlayerViewModel _playerViewModel;
-        private static Mutex?          _startUpCheckMutex = null;
+        private         PlayerViewModel _playerViewModel;
+        private static  Mutex?          _startUpCheckMutex = null;
         public MainWindow()
         {
             _playerViewModel = new PlayerViewModel();
