@@ -34,6 +34,8 @@ Right click on the tray icon to access other functionality like hiding columns, 
 
 SteamConnectionInfo.WPF injects the DLL from SteamConnectionInfo.DLL into steam.exe and this DLL hooks the function [ReadP2PPacket()](https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket) which is found in the steamclient module and uses this to establish a connection between Steam ID and IP address. DLL from SteamConnectionInfo.DLL communicates with SteamConnectionInfo.WPF through shared memory so that SteamConnectionInfo.WPF can receive data about the players and show it to you in the overlay.
 
+SteamConnectionInfo.DLL uses npcap to monitor packets to measure pings, curl for accessing ip-api.com for resolving IP addresses to country, and nlohmann for working with JSON.
+
 **SOLUTION STRUCTURE**
 
 SteamConnectionInfo.DLL is a C++ project that builds the DLL.
