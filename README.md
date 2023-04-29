@@ -2,7 +2,7 @@
 
 Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
-![Example Image](25.04.2023.jpg)
+![Example Image](29.04.2023-2.png)
 
 **IMPORTANT**
 
@@ -14,9 +14,9 @@ I plan on adding support for the newer [SteamNetworkingMessages](https://partner
 
 You have two options:
 
-1. Clone the repository and build it yourself. Keep in mind that only x86 Release mode is supported. Publish it and copy the files at \bin\x86\Release\net6.0-windows\publish\win-x86 to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
+1. Download SteamConnectionInfo.zip from [Releases](https://github.com/FredrikVullum/SteamConnectionInfo/releases) and extract the contents to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
 
-2. Download the SCI.zip from [Releases](https://github.com/FredrikVullum/SteamConnectionInfo/releases) and extract the contents to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
+2. Clone the repository and build it yourself. Keep in mind that only x86 Release mode is supported. Publish it and copy the files at \bin\x86\Release\net6.0-windows\publish\win-x86 to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
 
 For SteamConnectionInfo to work SteamConnectionInfo.dll must be in the same folder as SteamConnectionInfo.WPF.exe.
 
