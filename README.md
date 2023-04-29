@@ -46,11 +46,11 @@ SteamConnectionInfo.dll uses npcap to monitor packets to measure pings, curl for
 
 **SOLUTION STRUCTURE**
 
-SteamConnectionInfo.DLL is a C++ project that builds the DLL.
+SteamConnectionInfo.DLL is a C++ project that builds SteamConnectionInfo.dll
 
-SteamConnectionInfo.Core is a C# class library that contains functions necessary for SteamConnectionInfo.WPF
+SteamConnectionInfo.Core is a C# class library that contains core functions to be used in SteamConnectionInfo.WPF
 
-SteamConnectionInfo.WPF is a C# project that contains the main executable which shows the overlay, interacts with the DLL, etc.
+SteamConnectionInfo.WPF is the C# project that builds SteamConnectionInfo.WPF.exe
 
 **TODO**
 
