@@ -147,7 +147,8 @@ namespace Hooks
 		bool playerAlreadyExists = false;
 
 		playersMutex.lock();
-		for (auto& player : players) {
+		for (auto& player : players) 
+		{
 			if (player.steam_id != playerSteamId)
 				continue;
 
@@ -161,7 +162,8 @@ namespace Hooks
 		}
 		playersMutex.unlock();
 
-		if (!playerAlreadyExists) {
+		if (!playerAlreadyExists) 
+		{
 			Player playerToAdd;
 			playerToAdd.last_seen = steady_clock::now();
 			playerToAdd.steam_ip = session.m_nRemoteIP;
