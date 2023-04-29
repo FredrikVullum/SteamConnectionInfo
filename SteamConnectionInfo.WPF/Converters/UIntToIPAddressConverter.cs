@@ -12,7 +12,9 @@ namespace SteamConnectionInfoWpf.Converters
         {
             if (value is uint uintValue)
             {
-                return new IPAddress(uintValue).ToString();
+                byte[] bytes = BitConverter.GetBytes(uintValue);
+                Array.Reverse(bytes);
+                return new IPAddress(bytes).ToString();
             }
             return value;
         }

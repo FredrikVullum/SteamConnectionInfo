@@ -10,12 +10,12 @@
         public double WindowPositionY { get; set; } = 540;
         public int WindowOpacity { get; set; } = 80;
         public bool ColumnIpEnabled { get; set; } = true;
-        public bool ColumnPortEnabled { get; set; } = true;
+        public bool ColumnPingEnabled { get; set; } = true;
         public bool ColumnRelayEnabled { get; set; } = false;
         public bool ColumnCountryEnabled { get; set; } = true;
         public bool ColumnNameEnabled { get; set; } = true;
         public bool LoggingEnabled { get; set; } = true;
-        public bool LatencyFilterEnabled { get; set; } = false;
+        public bool PingFilterEnabled { get; set; } = false;
         public bool CountryFilterEnabled { get; set; } = false;
 
     }

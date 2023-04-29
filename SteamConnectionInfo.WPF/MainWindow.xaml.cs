@@ -92,20 +92,20 @@ namespace SteamConnectionInfoWpf
             PlayersDataGrid.DataContext = _playerViewModel;
 
             checkBoxIp.IsChecked = ConfigurationService.Get(config => config.ColumnIpEnabled);
-            checkBoxPort.IsChecked = ConfigurationService.Get(config => config.ColumnPortEnabled);
+            checkBoxPing.IsChecked = ConfigurationService.Get(config => config.ColumnPingEnabled);
             checkBoxRelay.IsChecked = ConfigurationService.Get(config => config.ColumnRelayEnabled);
             checkBoxCountry.IsChecked = ConfigurationService.Get(config => config.ColumnCountryEnabled);
             checkBoxName.IsChecked = ConfigurationService.Get(config => config.ColumnNameEnabled);
 
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxIp, (bool)checkBoxIp.IsChecked);
-            WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxPort, (bool)checkBoxPort.IsChecked);
+            WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxPing, (bool)checkBoxPing.IsChecked);
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxRelay, (bool)checkBoxRelay.IsChecked);
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxCountry, (bool)checkBoxCountry.IsChecked);
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxName, (bool)checkBoxName.IsChecked);
 
             checkBoxLogging.IsChecked = ConfigurationService.Get(config => config.LoggingEnabled);
             checkBoxFilterCountry.IsChecked = ConfigurationService.Get(config => config.CountryFilterEnabled);
-            checkBoxFilterLatency.IsChecked = ConfigurationService.Get(config => config.LatencyFilterEnabled);
+            checkBoxFilterPing.IsChecked = ConfigurationService.Get(config => config.PingFilterEnabled);
         }
 
 
@@ -222,15 +222,15 @@ namespace SteamConnectionInfoWpf
 
             ConfigurationService.Upsert(config => config.LoggingEnabled, false);
         }
-        private void CheckBoxFilterLatency_Checked(object sender, RoutedEventArgs e)
+        private void CheckBoxFilterPing_Checked(object sender, RoutedEventArgs e)
         {
 
-            ConfigurationService.Upsert(config => config.LatencyFilterEnabled, true);
+            ConfigurationService.Upsert(config => config.PingFilterEnabled, true);
         }
-        private void CheckBoxFilterLatency_Unchecked(object sender, RoutedEventArgs e)
+        private void CheckBoxFilterPing_Unchecked(object sender, RoutedEventArgs e)
         {
 
-            ConfigurationService.Upsert(config => config.LatencyFilterEnabled, false);
+            ConfigurationService.Upsert(config => config.PingFilterEnabled, false);
         }
         private void CheckBoxFilterCountry_Checked(object sender, RoutedEventArgs e)
         {
@@ -321,8 +321,8 @@ namespace SteamConnectionInfoWpf
                         case "IP":
                             ConfigurationService.Upsert(config => config.ColumnIpEnabled, show);
                             break;
-                        case "PORT":
-                            ConfigurationService.Upsert(config => config.ColumnPortEnabled, show);
+                        case "LATENCY":
+                            ConfigurationService.Upsert(config => config.ColumnPingEnabled, show);
                             break;
                         case "RELAY":
                             ConfigurationService.Upsert(config => config.ColumnRelayEnabled, show);
@@ -385,7 +385,7 @@ namespace SteamConnectionInfoWpf
                         else
                         {
                             var players = JsonConvert.DeserializeObject<List<Player>>(data);
-
+                           
                             mainWindow.Dispatcher.Invoke(() =>
                             {
                                 if (players == null || players.Count < 1)
@@ -409,7 +409,7 @@ namespace SteamConnectionInfoWpf
                             });
                         }
 
-                        Thread.Sleep(1000);
+                        Thread.Sleep(500);
                     }
                 });
             }
