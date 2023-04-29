@@ -16,11 +16,17 @@ I plan on adding support for the newer [SteamNetworkingMessages](https://partner
 
 You have two options:
 
-1. Download SteamConnectionInfo.zip from [Releases](https://github.com/FredrikVullum/SteamConnectionInfo/releases) and extract the contents to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
+1. Download SteamConnectionInfo.zip from [Releases](https://github.com/FredrikVullum/SteamConnectionInfo/releases) and extract the contents to a folder of your choosing.
 
-2. Clone the repository and build it yourself. Keep in mind that only x86 Release mode is supported. Publish it and copy the files at \bin\x86\Release\net6.0-windows\publish\win-x86 to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
+2. Clone the repository and build it yourself. Keep in mind that only x86 Release mode is supported. Publish it and copy the files at \bin\x86\Release\net6.0-windows\publish\win-x86 to a folder of your choosing.
 
-For SteamConnectionInfo to work SteamConnectionInfo.dll must be in the same folder as SteamConnectionInfo.WPF.exe.
+**HOW TO RUN**
+
+1. Set your game to windowed mode. SteamConnectionInfo will not work if the game is in fullscreen mode.
+2. Make sure SteamConnectionInfo.WPF.exe is in the same folder as SteamConnectionInfo.dll
+3. Run SteamConnectionInfo.WPF.exe
+
+If you get an error when starting SteamConnectionInfo.WPF.exe it most likely means that you're missing the .NET runtime or SteamConnectionInfo.dll is outdated and does not have the correct addresses required to hook necessary functions for SteamConnectionInfo to work.
 
 **HINTS**
 
