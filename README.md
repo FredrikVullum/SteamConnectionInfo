@@ -26,11 +26,13 @@ If you get an error when starting SteamConnectionInfo.WPF.exe it most likely mea
 
 **HOW TO USE**
 
-Right click on the tray icon on your taskbar to access functionality like hiding columns, changing the window opacity, etc.
+Right click the tray icon on your taskbar to access functionality like hiding columns, changing the window opacity, etc.
 
 Press Insert to lock the window, making it transparent for all input. Press insert again to unlock so you can move the window around and interact with it.
 
 Press Home to hide the window. Press Home again to show it.
+
+Right click the tray icon on your taskbar and click on EXIT to exit SteamConnectionInfo.
 
 **HOW DOES IT WORK?**
 
