@@ -2,7 +2,7 @@
 
 Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
-![Example Image](25.04.2023.jpg)
+![Example Image](29.04.2023.jpg)
 
 **IMPORTANT**
 
