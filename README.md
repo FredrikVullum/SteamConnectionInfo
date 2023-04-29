@@ -14,12 +14,11 @@ I plan on adding support for the newer [SteamNetworkingMessages](https://partner
 
 You have two options:
 
-1. Clone the repository and build it yourself. Publish it and copy the files at \bin\x86\Release\net6.0-windows\publish\win-x86 to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
+1. Clone the repository and build it yourself. Keep in mind that only x86 Release mode is supported. Publish it and copy the files at \bin\x86\Release\net6.0-windows\publish\win-x86 to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
 
 2. Download the SCI.zip from [Releases](https://github.com/FredrikVullum/SteamConnectionInfo/releases) and extract the contents to a folder of your choosing. Run SteamConnectionInfo.WPF.exe
 
-You need .NET to run the executable if you don't have it already. SteamConnectionInfo.dll must also be in the same folder as SteamConnectionInfo.WPF.exe.
-If you build it yourself both SteamConnectionInfo.dll and SteamConnectionInfo.WPF.exe must target x86.
+For SteamConnectionInfo to work SteamConnectionInfo.dll must be in the same folder as SteamConnectionInfo.WPF.exe.
 
 **HINTS**
 
@@ -42,8 +41,6 @@ SteamConnectionInfo.Core is a C# class library that contains functions necessary
 SteamConnectionInfo.WPF is a C# project that contains the main executable which shows the overlay, interacts with the DLL, etc.
 
 **TODO**
-
-Add Latency column that shows the latency between you and a player in the overlay
 
 Add support for games using newer SteamNetworkingMessages interface for P2P
 
