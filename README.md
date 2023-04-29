@@ -50,7 +50,7 @@ SteamConnectionInfo.DLL is a C++ project that builds SteamConnectionInfo.dll
 
 SteamConnectionInfo.Core is a C# class library that contains core functions for SteamConnectionInfo.WPF
 
-SteamConnectionInfo.WPF is the C# project that builds SteamConnectionInfo.WPF.exe
+SteamConnectionInfo.WPF is a C# project that builds SteamConnectionInfo.WPF.exe
 
 **TODO**
 
