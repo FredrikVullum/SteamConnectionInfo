@@ -24,7 +24,7 @@ You have two options:
 
 If you get an error when starting SteamConnectionInfo.WPF.exe it most likely means that you're missing the .NET runtime or SteamConnectionInfo.dll is outdated and does not have the correct addresses required to hook necessary functions for SteamConnectionInfo to work.
 
-**HINTS**
+**HOW TO USE**
 
 Right click on the tray icon on your taskbar to access other functionality like hiding columns, changing the window opacity, etc.
 
