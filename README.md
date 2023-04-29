@@ -8,8 +8,6 @@ Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
 SteamConnectionInfo only works with games that utilize the older [SteamNetworking](https://partner.steamgames.com/doc/api/ISteamNetworking) API.
 
-I plan on adding support for the newer [SteamNetworkingMessages](https://partner.steamgames.com/doc/api/ISteamNetworkingMessages) API in the future.
-
 **HOW TO DOWNLOAD**
 
 You have two options:
