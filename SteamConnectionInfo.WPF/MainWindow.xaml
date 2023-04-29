@@ -106,7 +106,7 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Width="110" Header="IP" Binding="{Binding SteamIp, Converter={StaticResource UIntToIPAddressConverter}}" />
-                <DataGridTextColumn Width="70" Header="PORT" Binding="{Binding SteamPort}" />
+                <DataGridTextColumn Width="70" Header="PING" Binding="{Binding Ping}"/>
                 <DataGridTextColumn Width="50" Header="RELAY" Binding="{Binding SteamRelay}" />
                 <DataGridTextColumn Width="130" Header="COUNTRY" Binding="{Binding Country}" />
                 <DataGridTextColumn Width="*" Header="NAME" Binding="{Binding SteamName}">
@@ -176,7 +176,7 @@
                             <Image Source="pack://application:,,,/Images/icons8-list-24.png" Width="16" Height="16"/>
                         </MenuItem.Icon>
                         <CheckBox Name="checkBoxIp" Content="IP" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
-                        <CheckBox Name="checkBoxPort" Content="PORT" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
+                        <CheckBox Name="checkBoxPing" Content="PING" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
                         <CheckBox Name="checkBoxRelay" Content="RELAY" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
                         <CheckBox Name="checkBoxCountry" Content="COUNTRY" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
                         <CheckBox Name="checkBoxName" Content="NAME" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
@@ -189,7 +189,7 @@
 
                         <CheckBox Name="checkBoxLogging" Content="Save players to log file" IsChecked="False" Checked="CheckBoxLog_Checked" Unchecked="CheckBoxLog_Unchecked"/>
                         <CheckBox Name="checkBoxFilterCountry" Content="Enable country filter" IsChecked="False" Checked="CheckBoxFilterCountry_Checked" Unchecked="CheckBoxFilterCountry_Unchecked"/>
-                        <CheckBox Name="checkBoxFilterLatency" Content="Enable latency filter" IsChecked="False" Checked="CheckBoxFilterLatency_Checked" Unchecked="CheckBoxFilterLatency_Unchecked"/>
+                        <CheckBox Name="checkBoxFilterPing" Content="Enable ping filter" IsChecked="False" Checked="CheckBoxFilterPing_Checked" Unchecked="CheckBoxFilterPing_Unchecked"/>
                     </MenuItem>
 
                     <Separator></Separator>

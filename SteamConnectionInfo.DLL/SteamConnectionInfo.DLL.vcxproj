@@ -113,7 +113,7 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
     <ClInclude Include="helpers\SharedMemoryProducer.h" />
     <ClInclude Include="helpers\SignatureFinder.h" />
     <ClInclude Include="helpers\VirtualMethodTableHooker.h" />
-    <ClInclude Include="hooks\GetFriendPersonaName.h" />
+    <ClInclude Include="hooks\GetPersonaName.h" />
     <ClInclude Include="hooks\SendP2PPacket.h" />
     <ClInclude Include="models\player.h" />
     <ClInclude Include="helpers\PlayerSerializer.h" />
@@ -158,6 +158,8 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
   </ItemGroup>
   <ItemGroup>
     <Library Include="packages\lib\libcurl.lib" />
+    <Library Include="packages\lib\Packet.lib" />
+    <Library Include="packages\lib\wpcap.lib" />
     <Library Include="packages\lib\zlib.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -5,28 +5,26 @@
 #include "helpers/IpToCountryResolver.h"
 #include "helpers/LatencyMonitor.h"
 
-#include "hooks/GetFriendPersonaName.h"
+#include "hooks/GetPersonaName.h"
 #include "hooks/SendP2PPacket.h"
 
 namespace Hooks 
 {
 	std::unique_ptr<VirtualMethodTableHooker> SteamNetworkingHooker = nullptr;
-	SendP2PPacket_t		 SendP2PPacket = nullptr;
+	SendP2PPacket_t							  SendP2PPacket = nullptr;
 
 	std::unique_ptr<VirtualMethodTableHooker> SteamFriendsHooker = nullptr;
-	GetFriendPersonaName_t		 GetFriendPersonaName = nullptr;
+	GetPersonaName_t						  GetPersonaName = nullptr;
 
 	std::vector<Player> players;
 	std::mutex playersMutex;
 
 	SharedMemoryProducer producer;
 
-
 	void PacketMonitoringThread() {
 		LatencyMonitor::Run(&players, &playersMutex);
 	}
 	
-
 	void Run() {
 		if (!producer.Initialize("SteamConnectionInfoSharedMemoryRegion", 4096))
 			return;
@@ -40,7 +38,7 @@ namespace Hooks
 			playersMutex.lock();
 			for (auto it = players.begin(); it != players.end();) 
 			{
-				auto time_delta = std::chrono::duration_cast<std::chrono::seconds>(current_time - it->time_point);
+				auto time_delta = std::chrono::duration_cast<std::chrono::seconds>(current_time - it->last_seen);
 
 				if (time_delta.count() > 4) {
 					it = players.erase(it);
@@ -52,17 +50,6 @@ namespace Hooks
 				}
 
 				++it;
-
-				/*
-				if player's country is in the country filter... remove and Close the p2p session with this player
-				country filter can be a file that contains countries that should be removed?
-	
-				check player's latency.. if it is higher than specified in latency filter..  remove and Close the p2p session with this player
-				latency filter can be in a file that contains the maximum latency? maybe the same one as country filter
-
-				these filters can just be additional .json files that contain countries in one file and a latency max in the other
-				maybe I try can to read appsettings.json to check if filter for country or latency is enabled
-				*/	
 			}
 			playersMutex.unlock();
 
@@ -74,21 +61,24 @@ namespace Hooks
 				playersMutex.unlock();
 			}
 
-			Sleep(1000);
+			Sleep(500);
 		}
 	} 
 
 	void Initialize() 
 	{
-		DWORD steamclient = 0;
+		DWORD steam_client = 0;
 
-		while (!steamclient) {
-			steamclient = reinterpret_cast<DWORD>(GetModuleHandleA("steamclient.dll"));
-			Sleep(1000);
+		while (!steam_client) {
+			steam_client = reinterpret_cast<DWORD>(GetModuleHandleA("steamclient.dll"));
+			Sleep(250);
 		}
 
-		DWORD CClientNetworkingVTableInstance = SignatureFinder::Find("steamclient.dll", "C7 07 ? ? ? ? C7 47 ? ? ? ? ? E8 ? ? ? ? 8B 47 0C") + 2;
-		DWORD CUserFriendsVTableInstance = SignatureFinder::Find("steamclient.dll", "C7 07 ? ? ? ? C7 47 ? ? ? ? ? 8B 40 24") + 2;
+		DWORD CClientNetworkingVTableInstance = SignatureFinder::Find("steamclient.dll", 
+			"C7 07 ? ? ? ? C7 47 ? ? ? ? ? E8 ? ? ? ? 8B 47 0C") + 2;
+
+		DWORD CUserFriendsVTableInstance = SignatureFinder::Find("steamclient.dll", 
+			"C7 07 ? ? ? ? C7 47 ? ? ? ? ? 8B 40 24") + 2;
 
 		SteamNetworkingHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CClientNetworkingVTableInstance);
 		if (!SteamNetworkingHooker)
@@ -98,37 +88,41 @@ namespace Hooks
 		if (!SteamFriendsHooker)
 			return;
 
+		
 		SendP2PPacket = (SendP2PPacket_t)SteamNetworkingHooker->Hook(0, SendP2PPacket_Hook);
 		if (!SendP2PPacket)
 			return;
 
-		GetFriendPersonaName = (GetFriendPersonaName_t)SteamFriendsHooker->Hook(13, GetFriendPersonaName_Hook);
-		if (!GetFriendPersonaName)
+		GetPersonaName = (GetPersonaName_t)SteamFriendsHooker->Hook(0, GetPersonaName_Hook);
+		if (!GetPersonaName)
 			return;
 
-		AllocConsole();
-		freopen("CONOUT$", "w", stdout);
-
+		
 		Run();
 	}
 
 	ISteamFriends* SteamFriends = nullptr;
-	const char* __fastcall GetFriendPersonaName_Hook(ISteamFriends* thisptr, void* edx, CSteamID steamIDFriend) 
+
+	const char* __fastcall GetPersonaName_Hook(ISteamFriends* thisptr)
 	{
 		if (thisptr && thisptr != SteamFriends) {
 			SteamFriends = thisptr;
 		}
-		return GetFriendPersonaName(thisptr, steamIDFriend);
+		return GetPersonaName(thisptr);
 	}
 
 	bool __fastcall SendP2PPacket_Hook(ISteamNetworking* CClientNetworkingAPIInstance, void* edx, CSteamID steamId, const void* pubData, unsigned int cubData, EP2PSend eP2PSendType, int nChannel)
 	{
 		auto original = SendP2PPacket(CClientNetworkingAPIInstance, steamId, pubData, cubData, eP2PSendType, nChannel);
 
-		if (!steamId.IsValid() || !SteamFriends)
+		if (!steamId.IsValid())
+			return original;
+
+		if (!SteamFriends)
 			return original;
 
 		std::string steam_name = SteamFriends->GetFriendPersonaName(steamId);
+		
 		if (steam_name.empty())
 			return original;
 
@@ -161,7 +155,7 @@ namespace Hooks
 
 			playerAlreadyExists = true;
 
-			player.time_point = steady_clock::now();
+			player.last_seen = steady_clock::now();
 			player.steam_ip = session.m_nRemoteIP;
 			player.steam_port = session.m_nRemotePort;
 			player.steam_name = steam_name;
@@ -171,7 +165,7 @@ namespace Hooks
 
 		if (!playerAlreadyExists) {
 			Player playerToAdd;
-			playerToAdd.time_point = steady_clock::now();
+			playerToAdd.last_seen = steady_clock::now();
 			playerToAdd.steam_ip = session.m_nRemoteIP;
 			playerToAdd.steam_port = session.m_nRemotePort;
 			playerToAdd.steam_name = steam_name;

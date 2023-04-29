@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SteamConnectionInfoCore.Models
+﻿namespace SteamConnectionInfoCore.Models
 {
-    internal class Log
+    public class Log
     {
+        public DateTime TimestampUtc { get; set; }
+        public Player? Player { get; set; }
     }
 }

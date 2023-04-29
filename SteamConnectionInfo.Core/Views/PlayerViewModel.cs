@@ -41,6 +41,7 @@ namespace SteamConnectionInfoCore.Views
             {
                 existingPlayer.SteamIp = player.SteamIp;
                 existingPlayer.SteamPort = player.SteamPort;
+                existingPlayer.Ping = player.Ping;
                 existingPlayer.SteamName = player.SteamName;
                 existingPlayer.SteamId = player.SteamId;
                 existingPlayer.SteamRelay = player.SteamRelay;

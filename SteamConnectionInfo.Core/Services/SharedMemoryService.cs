@@ -16,14 +16,22 @@ namespace SteamConnectionInfoCore.Services
             MemoryMappedFile?         _memoryMappedFile;
             MemoryMappedViewAccessor? _memoryMappedViewAccessor;
 
-            if (!EventWaitHandle.TryOpenExisting("ProducerReady", out _producerReadyEvent))
-                return result;
+            try
+            {
+                if (!EventWaitHandle.TryOpenExisting("ProducerReady", out _producerReadyEvent))
+                    return result;
+            }
+            catch { return result; }
 
             if (_producerReadyEvent.SafeWaitHandle.IsInvalid || _producerReadyEvent.SafeWaitHandle.IsClosed)
                 return result;
 
-            if (!EventWaitHandle.TryOpenExisting("ConsumerReady", out _consumerReadyEvent))
-                return result;
+            try
+            {
+                if (!EventWaitHandle.TryOpenExisting("ConsumerReady", out _consumerReadyEvent))
+                    return result;
+            }
+            catch { return result; }
 
             if (_consumerReadyEvent.SafeWaitHandle.IsInvalid || _consumerReadyEvent.SafeWaitHandle.IsClosed)
                 return result;
