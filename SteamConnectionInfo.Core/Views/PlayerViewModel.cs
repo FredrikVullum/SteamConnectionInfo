@@ -39,13 +39,29 @@ namespace SteamConnectionInfoCore.Views
             var existingPlayer = Players.FirstOrDefault(p => p.SteamId == player.SteamId);
             if (existingPlayer != null)
             {
-                existingPlayer.SteamIp = player.SteamIp;
-                existingPlayer.SteamPort = player.SteamPort;
-                existingPlayer.Ping = player.Ping;
-                existingPlayer.SteamName = player.SteamName;
-                existingPlayer.SteamId = player.SteamId;
-                existingPlayer.SteamRelay = player.SteamRelay;
-                existingPlayer.Country = player.Country;
+                if(existingPlayer.SteamIp != player.SteamIp)
+                    existingPlayer.SteamIp = player.SteamIp;
+
+                if (existingPlayer.SteamPort != player.SteamPort)
+                    existingPlayer.SteamPort = player.SteamPort;
+
+                if(existingPlayer.SteamPort != player.SteamPort)
+                    existingPlayer.SteamPort = player.SteamPort;
+
+                if(existingPlayer.Ping != player.Ping)
+                    existingPlayer.Ping = player.Ping;
+
+                if(existingPlayer.SteamName != player.SteamName)
+                    existingPlayer.SteamName = player.SteamName;
+
+                if(existingPlayer.SteamId != player.SteamId)
+                    existingPlayer.SteamId = player.SteamId;
+
+                if(existingPlayer.SteamRelay != player.SteamRelay)
+                    existingPlayer.SteamRelay = player.SteamRelay;
+
+                if (existingPlayer.Country != player.Country)
+                    existingPlayer.Country = player.Country;
             }
             else
             {
@@ -60,19 +76,16 @@ namespace SteamConnectionInfoCore.Views
 
         public void MergePlayers(IEnumerable<Player> players)
         {
-            // add new players
             foreach (var player in players.Where(p => !Players.Any(p2 => p2.SteamId == p.SteamId)))
             {
                 AddPlayer(player);
             }
 
-            // remove players that no longer exist
             foreach (var player in Players.Where(p => !players.Any(p2 => p2.SteamId == p.SteamId)).ToList())
             {
                 RemovePlayer(player);
             }
 
-            // update existing players
             foreach (var player in players.Where(p => Players.Any(p2 => p2.SteamId == p.SteamId)))
             {
                 UpdatePlayer(player);

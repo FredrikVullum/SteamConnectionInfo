@@ -5,30 +5,29 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading;
 using Newtonsoft.Json;
-
 using SteamConnectionInfoCore.Services;
 using SteamConnectionInfoCore.Models;
 using SteamConnectionInfoCore.Views;
 using System.Windows.Controls.Primitives;
 using System.Linq;
-using System.Timers;
 
 namespace SteamConnectionInfoWpf
 {
     public partial class MainWindow : Window
     {
-        public PlayerViewModel _playerViewModel;
+        public         PlayerViewModel _playerViewModel;
+        private static Mutex?          _startUpCheckMutex = null;
         public MainWindow()
         {
             _playerViewModel = new PlayerViewModel();
 
-            bool mutexCreated;
-            Mutex mutex = new Mutex(true, "SteamConnectionInfoWPFAppMutex", out mutexCreated);
-            if (!mutexCreated)
+            bool mutexCreated = false;
+            _startUpCheckMutex = new Mutex(true, "SteamConnectionInfo.WPF", out mutexCreated);
+
+            if (!mutexCreated || !_startUpCheckMutex.WaitOne(TimeSpan.Zero, true))
             {
                 MessageBox.Show("An instance of SteamConnectionInfo.WPF is already running." +
                  " Only one instance of SteamConnectionInfo.WPF is allowed to run.",
@@ -36,7 +35,6 @@ namespace SteamConnectionInfoWpf
                  MessageBoxButton.OK,
                  MessageBoxImage.Exclamation);
 
-                mutex.Close();
                 Application.Current.Shutdown();
                 return;
             }

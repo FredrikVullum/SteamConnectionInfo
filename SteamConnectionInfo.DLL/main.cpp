@@ -40,7 +40,7 @@ namespace Hooks
 			{
 				auto time_delta = std::chrono::duration_cast<std::chrono::seconds>(current_time - it->last_seen);
 
-				if (time_delta.count() > 4) {
+				if (time_delta.count() > 6) {
 					it = players.erase(it);
 					continue;
 				}
@@ -57,11 +57,13 @@ namespace Hooks
 			{
 				playersMutex.lock();
 				std::string playersStr = PlayerSerializer::SerializeMany(players);
-				producer.SetData(playersStr);
 				playersMutex.unlock();
+
+				producer.SetData(playersStr);
+				
 			}
 
-			Sleep(500);
+			Sleep(1000);
 		}
 	} 
 
@@ -97,7 +99,6 @@ namespace Hooks
 		if (!GetPersonaName)
 			return;
 
-		
 		Run();
 	}
 
@@ -171,6 +172,7 @@ namespace Hooks
 			playerToAdd.steam_name = steam_name;
 			playerToAdd.steam_id = steam_id;
 			playerToAdd.steam_relay = session.m_bUsingRelay;
+
 			playersMutex.lock();
 			players.push_back(playerToAdd);
 			playersMutex.unlock();

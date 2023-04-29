@@ -40,41 +40,60 @@ namespace SteamConnectionInfoCore.Services
             {
                 string[] lines = File.ReadAllLines(_filePath);
 
-                Log? latestPlayerEntry = null;
+                LogPlayer? playerFromLog = null;
 
-                foreach (string line in lines)
+                for(int i = lines.Length - 1; i >= 0; i--)
                 {
-                    var entry = JsonConvert.DeserializeObject<Log>(line);
+                    var entry = JsonConvert.DeserializeObject<LogPlayer>(lines[i]);
 
-                    if (entry == null || entry.Player == null)
+                    if (entry == null)
                         continue;
 
-                    if (entry.Player.SteamId == player.SteamId)
+                    if(entry.SteamId == player.SteamId)
                     {
-                        latestPlayerEntry = entry;
-
-                        // If the existing player has a different SteamPort, add the new player to the log file
-                        if (entry.Player.SteamPort != player.SteamPort)
-                        {
-                            var output = new Log { TimestampUtc = DateTime.UtcNow, Player = player };
-
-                            using (StreamWriter file = new StreamWriter(_filePath, true))
-                            {
-                                file.WriteLine(JsonConvert.SerializeObject(output));
-                            }
-                        }
+                        playerFromLog = entry;
+                        break;
                     }
                 }
 
-                if (latestPlayerEntry == null || latestPlayerEntry?.Player?.SteamPort != player.SteamPort)
+                if (playerFromLog == null)
                 {
-                    var output = new Log { TimestampUtc = DateTime.UtcNow, Player = player };
+                    var output = new LogPlayer {
+                        TimestampUtc = DateTime.UtcNow,
+                        Ip = player.SteamIp,
+                        Port = player.SteamPort,
+                        Country = player.Country,
+                        UsingSteamRelay = player.SteamRelay,
+                        SteamName = player.SteamName,
+                        SteamId = player.SteamId
+                    };
 
                     using (StreamWriter file = new StreamWriter(_filePath, true))
                     {
                         file.WriteLine(JsonConvert.SerializeObject(output));
                     }
                 }
+                else
+                {
+                    if(playerFromLog.Port != player.SteamPort)
+                    {
+                        var output = new LogPlayer {
+                            TimestampUtc = DateTime.UtcNow,
+                            Ip = player.SteamIp,
+                            Port = player.SteamPort,
+                            Country = player.Country,
+                            UsingSteamRelay = player.SteamRelay,
+                            SteamName = player.SteamName,
+                            SteamId = player.SteamId
+                        };
+
+                        using (StreamWriter file = new StreamWriter(_filePath, true))
+                        {
+                            file.WriteLine(JsonConvert.SerializeObject(output));
+                        }
+                    }
+                }
+
             }
             catch
             {

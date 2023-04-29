@@ -6,13 +6,13 @@ namespace SteamConnectionInfoCore.Models
 {
     public class Player : INotifyPropertyChanged
     {
-        private uint _steamIp = 0;
+        private uint   _steamIp = 0;
         private ushort _steamPort = 0;
         private string _steamName = "Unknown";
-        private ulong _steamId = 0;
-        private byte _steamRelay = 0;
+        private ulong  _steamId = 0;
+        private byte   _steamRelay = 0;
         private string _country = "Unknown";
-        private long _ping = 0;
+        private long   _ping = 0;
 
         [JsonProperty("steam_ip")]
         public uint SteamIp
@@ -54,7 +54,6 @@ namespace SteamConnectionInfoCore.Models
             set
             {
                 _steamId = value;
-                OnPropertyChanged();
             }
         }
 
