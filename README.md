@@ -22,9 +22,11 @@ You have two options:
 2. Make sure SteamConnectionInfo.WPF.exe is in the same folder as SteamConnectionInfo.dll
 3. Run SteamConnectionInfo.WPF.exe
 
-If you get an error when starting SteamConnectionInfo.WPF.exe it most likely means that you're missing the .NET runtime.
+If you can't start SteamConnectionInfo at all, the problem is most likely that you're missing the .NET runtime.
 
-If the overlay says "UNLOADED" even when you have Steam running it means that the DLL is crashing when it's injected into steam.exe or the DLL injection isn't being performed at all. This could be because SteamConnectionInfo.dll is outdated and does not have the correct addresses required to hook necessary functions for it to work. The problem could also be with your AV and you might have to make an AV exception for the folder where SteamConnectionInfo.WPF.exe is located to fix this. 
+If you can start SteamConnectionInfo.WPF.exe but the overlay says "UNLOADED" and causes Steam to crash every time you launch it, the problem is most likely that the byte patterns that SteamConnectionInfo.dll uses to find important addresses in steamclient.dll are outdated. To fix this you either have to wait for me to update the DLL or you have to find the pattern yourself with a tool like IDA Pro and compile SteamConnectionInfo.dll yourself.
+
+If you can start SteamConnectionInfo.WPF.exe but the overlay says "UNLOADED" while steam is still running, the problem is most likely that the DLL injection is failing. To fix this you could try adding an AV exclusion to the folder where SteamConnectionInfo.WPF.exe and SteamConnectionInfo.dll are located.
 
 **HOW TO USE**
 
