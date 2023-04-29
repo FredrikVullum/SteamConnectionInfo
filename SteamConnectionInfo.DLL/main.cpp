@@ -33,14 +33,14 @@ namespace Hooks
 		
 		while (true) 
 		{
-			auto current_time = std::chrono::steady_clock::now();
+			auto currentTime = std::chrono::steady_clock::now();
 
 			playersMutex.lock();
 			for (auto it = players.begin(); it != players.end();) 
 			{
-				auto time_delta = std::chrono::duration_cast<std::chrono::seconds>(current_time - it->last_seen);
+				auto delta = std::chrono::duration_cast<std::chrono::seconds>(currentTime - it->last_seen);
 
-				if (time_delta.count() > 6) {
+				if (delta.count() > 6) {
 					it = players.erase(it);
 					continue;
 				}
@@ -56,11 +56,10 @@ namespace Hooks
 			if (producer.ConsumerIsReady()) 
 			{
 				playersMutex.lock();
-				std::string playersStr = PlayerSerializer::SerializeMany(players);
+				std::string playersAsJsonStr = PlayerSerializer::SerializeMany(players);
 				playersMutex.unlock();
 
-				producer.SetData(playersStr);
-				
+				producer.SetData(playersAsJsonStr);
 			}
 
 			Sleep(1000);
@@ -69,18 +68,16 @@ namespace Hooks
 
 	void Initialize() 
 	{
-		DWORD steam_client = 0;
+		HMODULE steamClientModuleHandle = 0;
 
-		while (!steam_client) {
-			steam_client = reinterpret_cast<DWORD>(GetModuleHandleA("steamclient.dll"));
+		while (!steamClientModuleHandle) {
+			steamClientModuleHandle = GetModuleHandleA("steamclient.dll");
 			Sleep(250);
 		}
 
-		DWORD CClientNetworkingVTableInstance = SignatureFinder::Find("steamclient.dll", 
-			"C7 07 ? ? ? ? C7 47 ? ? ? ? ? E8 ? ? ? ? 8B 47 0C") + 2;
+		DWORD CClientNetworkingVTableInstance = SignatureFinder::Find(steamClientModuleHandle,"C7 07 ? ? ? ? C7 47 ? ? ? ? ? E8 ? ? ? ? 8B 47 0C") + 2;
 
-		DWORD CUserFriendsVTableInstance = SignatureFinder::Find("steamclient.dll", 
-			"C7 07 ? ? ? ? C7 47 ? ? ? ? ? 8B 40 24") + 2;
+		DWORD CUserFriendsVTableInstance = SignatureFinder::Find(steamClientModuleHandle,"C7 07 ? ? ? ? C7 47 ? ? ? ? ? 8B 40 24") + 2;
 
 		SteamNetworkingHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CClientNetworkingVTableInstance);
 		if (!SteamNetworkingHooker)
@@ -102,56 +99,56 @@ namespace Hooks
 		Run();
 	}
 
-	ISteamFriends* SteamFriends = nullptr;
+	ISteamFriends* steamFriends = nullptr;
 
 	const char* __fastcall GetPersonaName_Hook(ISteamFriends* thisptr)
 	{
-		if (thisptr && thisptr != SteamFriends) {
-			SteamFriends = thisptr;
+		if (thisptr && thisptr != steamFriends) {
+			steamFriends = thisptr;
 		}
 		return GetPersonaName(thisptr);
 	}
 
 	bool __fastcall SendP2PPacket_Hook(ISteamNetworking* CClientNetworkingAPIInstance, void* edx, CSteamID steamId, const void* pubData, unsigned int cubData, EP2PSend eP2PSendType, int nChannel)
 	{
-		auto original = SendP2PPacket(CClientNetworkingAPIInstance, steamId, pubData, cubData, eP2PSendType, nChannel);
+		auto result = SendP2PPacket(CClientNetworkingAPIInstance, steamId, pubData, cubData, eP2PSendType, nChannel);
 
 		if (!steamId.IsValid())
-			return original;
+			return result;
 
-		if (!SteamFriends)
-			return original;
+		if (!steamFriends)
+			return result;
 
-		std::string steam_name = SteamFriends->GetFriendPersonaName(steamId);
+		std::string playerSteamName = steamFriends->GetFriendPersonaName(steamId);
 		
-		if (steam_name.empty())
-			return original;
+		if (playerSteamName.empty())
+			return result;
 
 		P2PSessionState_t session;
 
 		bool sessionResult = CClientNetworkingAPIInstance->GetP2PSessionState(steamId, &session);
 		if (!sessionResult)
-			return original;
+			return result;
 
 		bool sessionIsErrorFree = session.m_eP2PSessionError == 0;
 		if (!sessionIsErrorFree)
-			return original;
+			return result;
 
 		bool sessionConnecting = session.m_bConnecting;
 		if (sessionConnecting)
-			return original;
+			return result;
 
 		bool sessionActive = session.m_bConnectionActive;
 		if (!sessionActive)
-			return original;
+			return result;
 
-		uint64_t steam_id = steamId.ConvertToUint64();
+		uint64_t playerSteamId = steamId.ConvertToUint64();
 
 		bool playerAlreadyExists = false;
 
 		playersMutex.lock();
 		for (auto& player : players) {
-			if (player.steam_id != steam_id)
+			if (player.steam_id != playerSteamId)
 				continue;
 
 			playerAlreadyExists = true;
@@ -159,7 +156,7 @@ namespace Hooks
 			player.last_seen = steady_clock::now();
 			player.steam_ip = session.m_nRemoteIP;
 			player.steam_port = session.m_nRemotePort;
-			player.steam_name = steam_name;
+			player.steam_name = playerSteamName;
 			player.steam_relay = session.m_bUsingRelay;
 		}
 		playersMutex.unlock();
@@ -169,8 +166,8 @@ namespace Hooks
 			playerToAdd.last_seen = steady_clock::now();
 			playerToAdd.steam_ip = session.m_nRemoteIP;
 			playerToAdd.steam_port = session.m_nRemotePort;
-			playerToAdd.steam_name = steam_name;
-			playerToAdd.steam_id = steam_id;
+			playerToAdd.steam_name = playerSteamName;
+			playerToAdd.steam_id = playerSteamId;
 			playerToAdd.steam_relay = session.m_bUsingRelay;
 
 			playersMutex.lock();
@@ -178,7 +175,7 @@ namespace Hooks
 			playersMutex.unlock();
 		}
 
-		return original;
+		return result;
 	}
 
 	void Restore() {

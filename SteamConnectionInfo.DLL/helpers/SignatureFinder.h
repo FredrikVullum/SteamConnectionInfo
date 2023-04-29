@@ -9,14 +9,14 @@
 
 class SignatureFinder {
 public:
-	_inline static uint64_t Find(const char* szModule, const char* szSignature)
+	_inline static uint64_t Find(HMODULE moduleHandle, const char* szSignature)
 	{
 		#define INRANGE(x,a,b)  (x >= a && x <= b) 
 		#define getBits( x )    (INRANGE((x&(~0x20)),'A','F') ? ((x&(~0x20)) - 'A' + 0xa) : (INRANGE(x,'0','9') ? x - '0' : 0))
 		#define getByte( x )    (getBits(x[0]) << 4 | getBits(x[1]))
 
 		MODULEINFO modInfo;
-		GetModuleInformation(GetCurrentProcess(), GetModuleHandleA(szModule), &modInfo, sizeof(MODULEINFO));
+		GetModuleInformation(GetCurrentProcess(), moduleHandle, &modInfo, sizeof(MODULEINFO));
 		DWORD startAddress = (DWORD)modInfo.lpBaseOfDll;
 		DWORD endAddress = startAddress + modInfo.SizeOfImage;
 		const char* pat = szSignature;
