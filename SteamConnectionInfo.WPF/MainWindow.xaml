@@ -32,7 +32,7 @@
         </Grid.RowDefinitions>
 
         <Border Name="borderTop" Grid.Row="0" Background="#474747" Width="Auto" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MouseDown="Border_MouseDown">
-            <Label Content="STEAM CONNECTION INFO 1.0" FontFamily="{StaticResource GlobalFont}" FontSize="13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Label Content="STEAM CONNECTION INFO" FontFamily="{StaticResource GlobalFont}" FontSize="13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Border>
 
         <DataGrid 
