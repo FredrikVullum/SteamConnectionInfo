@@ -10,10 +10,10 @@
 
 namespace Hooks 
 {
-	std::unique_ptr<VirtualMethodTableHooker> SteamNetworkingHooker = nullptr;
+	std::unique_ptr<VirtualMethodTableHooker> steamNetworkingHooker = nullptr;
 	SendP2PPacket_t							  SendP2PPacket = nullptr;
 
-	std::unique_ptr<VirtualMethodTableHooker> SteamFriendsHooker = nullptr;
+	std::unique_ptr<VirtualMethodTableHooker> steamFriendsHooker = nullptr;
 	GetPersonaName_t						  GetPersonaName = nullptr;
 
 	std::vector<Player> players;
@@ -79,54 +79,54 @@ namespace Hooks
 
 		DWORD CUserFriendsVTableInstance = SignatureFinder::Find(steamClientModuleHandle,"C7 07 ? ? ? ? C7 47 ? ? ? ? ? 8B 40 24") + 2;
 
-		SteamNetworkingHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CClientNetworkingVTableInstance);
-		if (!SteamNetworkingHooker)
+		steamNetworkingHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CClientNetworkingVTableInstance);
+		if (!steamNetworkingHooker)
 			return;
 
-		SteamFriendsHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CUserFriendsVTableInstance);
-		if (!SteamFriendsHooker)
+		steamFriendsHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CUserFriendsVTableInstance);
+		if (!steamFriendsHooker)
 			return;
 
 		
-		SendP2PPacket = (SendP2PPacket_t)SteamNetworkingHooker->Hook(0, SendP2PPacket_Hook);
+		SendP2PPacket = (SendP2PPacket_t)steamNetworkingHooker->Hook(0, SendP2PPacket_Hook);
 		if (!SendP2PPacket)
 			return;
 
-		GetPersonaName = (GetPersonaName_t)SteamFriendsHooker->Hook(0, GetPersonaName_Hook);
+		GetPersonaName = (GetPersonaName_t)steamFriendsHooker->Hook(0, GetPersonaName_Hook);
 		if (!GetPersonaName)
 			return;
 
 		Run();
 	}
 
-	ISteamFriends* steamFriends = nullptr;
+	ISteamFriends* SteamFriends = nullptr;
 
 	const char* __fastcall GetPersonaName_Hook(ISteamFriends* thisptr)
 	{
-		if (thisptr && thisptr != steamFriends) {
-			steamFriends = thisptr;
+		if (thisptr && thisptr != SteamFriends) {
+			SteamFriends = thisptr;
 		}
 		return GetPersonaName(thisptr);
 	}
 
-	bool __fastcall SendP2PPacket_Hook(ISteamNetworking* CClientNetworkingAPIInstance, void* edx, CSteamID steamId, const void* pubData, unsigned int cubData, EP2PSend eP2PSendType, int nChannel)
+	bool __fastcall SendP2PPacket_Hook(ISteamNetworking* SteamNetworking, void* edx, CSteamID steamId, const void* pubData, unsigned int cubData, EP2PSend eP2PSendType, int nChannel)
 	{
-		auto result = SendP2PPacket(CClientNetworkingAPIInstance, steamId, pubData, cubData, eP2PSendType, nChannel);
+		auto result = SendP2PPacket(SteamNetworking, steamId, pubData, cubData, eP2PSendType, nChannel);
 
 		if (!steamId.IsValid())
 			return result;
 
-		if (!steamFriends)
+		if (!SteamFriends)
 			return result;
 
-		std::string playerSteamName = steamFriends->GetFriendPersonaName(steamId);
+		std::string playerSteamName = SteamFriends->GetFriendPersonaName(steamId);
 		
 		if (playerSteamName.empty())
 			return result;
 
 		P2PSessionState_t session;
 
-		bool sessionResult = CClientNetworkingAPIInstance->GetP2PSessionState(steamId, &session);
+		bool sessionResult = SteamNetworking->GetP2PSessionState(steamId, &session);
 		if (!sessionResult)
 			return result;
 
@@ -181,11 +181,11 @@ namespace Hooks
 	}
 
 	void Restore() {
-		if (SteamNetworkingHooker)
-			SteamNetworkingHooker->UnhookAll();
+		if (steamNetworkingHooker)
+			steamNetworkingHooker->UnhookAll();
 
-		if (SteamFriendsHooker)
-			SteamFriendsHooker->UnhookAll();
+		if (steamFriendsHooker)
+			steamFriendsHooker->UnhookAll();
 
 		producer.Destroy();
 
