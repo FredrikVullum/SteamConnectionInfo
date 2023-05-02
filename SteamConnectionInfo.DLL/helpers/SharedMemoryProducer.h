@@ -132,4 +132,8 @@ public:
         if (consumerReadyEvent)
             CloseHandle(consumerReadyEvent);
     }
+
+    ~SharedMemoryProducer() {
+        Destroy();
+    }
 };

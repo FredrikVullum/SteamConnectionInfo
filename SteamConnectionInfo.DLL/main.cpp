@@ -10,6 +10,8 @@
 
 namespace Hooks 
 {
+	ISteamFriends* SteamFriends = nullptr;
+
 	std::unique_ptr<VirtualMethodTableHooker> steamNetworkingHooker = nullptr;
 	SendP2PPacket_t							  SendP2PPacket = nullptr;
 
@@ -25,10 +27,24 @@ namespace Hooks
 		LatencyMonitor::Run(&players, &playersMutex);
 	}
 	
-	void Run() {
-		if (!producer.Initialize("SteamConnectionInfoSharedMemoryRegion", 4096))
-			return;
+	void Restore() {
+		if (steamNetworkingHooker)
+			steamNetworkingHooker->UnhookAll();
 
+		if (steamFriendsHooker)
+			steamFriendsHooker->UnhookAll();
+
+		producer.Destroy();
+
+		FreeLibraryAndExitThread(GetModuleHandle(NULL), 0);
+	}
+
+	void Run() {
+		if (!producer.Initialize("SteamConnectionInfoSharedMemoryRegion", 4096)) {
+			Restore();
+			return;
+		}
+			
 		CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)PacketMonitoringThread, NULL, NULL, NULL);
 		
 		while (true) 
@@ -72,38 +88,46 @@ namespace Hooks
 
 		while (!steamClientModuleHandle) {
 			steamClientModuleHandle = GetModuleHandleA("steamclient.dll");
-			Sleep(250);
+			Sleep(1000);
 		}
 
-		DWORD CClientNetworkingVTableInstance = SignatureFinder::Find(steamClientModuleHandle,"C7 07 ? ? ? ? C7 47 ? ? ? ? ? E8 ? ? ? ? 8B 47 0C") + 2;
+		DWORD CClientNetworkingVTable = SignatureFinder::Find(steamClientModuleHandle,"C7 07 ? ? ? ? C7 47 ? ? ? ? ? E8 ? ? ? ? 8B 47 0C") + 2;
 
-		DWORD CUserFriendsVTableInstance = SignatureFinder::Find(steamClientModuleHandle,"C7 07 ? ? ? ? C7 47 ? ? ? ? ? 8B 40 24") + 2;
+		DWORD CUserFriendsVTable = SignatureFinder::Find(steamClientModuleHandle,"C7 07 ? ? ? ? C7 47 ? ? ? ? ? 8B 40 24") + 2;
 
-		steamNetworkingHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CClientNetworkingVTableInstance);
-		if (!steamNetworkingHooker)
+		steamNetworkingHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CClientNetworkingVTable);
+		if (!steamNetworkingHooker) 
+		{
+			Restore();
 			return;
-
-		steamFriendsHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CUserFriendsVTableInstance);
-		if (!steamFriendsHooker)
+		}
+			
+		steamFriendsHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CUserFriendsVTable);
+		if (!steamFriendsHooker) {
+			Restore();
 			return;
-
+		}
 		
 		SendP2PPacket = (SendP2PPacket_t)steamNetworkingHooker->Hook(0, SendP2PPacket_Hook);
 		if (!SendP2PPacket)
+		{
+			Restore();
 			return;
+		}
 
 		GetPersonaName = (GetPersonaName_t)steamFriendsHooker->Hook(0, GetPersonaName_Hook);
 		if (!GetPersonaName)
+		{
+			Restore();
 			return;
+		}
 
 		Run();
 	}
 
-	ISteamFriends* SteamFriends = nullptr;
-
 	const char* __fastcall GetPersonaName_Hook(ISteamFriends* thisptr)
 	{
-		if (thisptr && thisptr != SteamFriends) {
+		if (thisptr != SteamFriends) {
 			SteamFriends = thisptr;
 		}
 		return GetPersonaName(thisptr);
@@ -178,18 +202,6 @@ namespace Hooks
 		}
 
 		return result;
-	}
-
-	void Restore() {
-		if (steamNetworkingHooker)
-			steamNetworkingHooker->UnhookAll();
-
-		if (steamFriendsHooker)
-			steamFriendsHooker->UnhookAll();
-
-		producer.Destroy();
-
-		FreeLibraryAndExitThread(GetModuleHandle(NULL), 0);
 	}
 };
 
