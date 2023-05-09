@@ -360,7 +360,7 @@ namespace SteamConnectionInfoWpf
                             }
                         });
 
-                        Thread.Sleep(1000);
+                        Thread.Sleep(500);
                     }
                 });
             }
@@ -407,7 +407,7 @@ namespace SteamConnectionInfoWpf
                             });
                         }
 
-                        Thread.Sleep(500);
+                        Thread.Sleep(200);
                     }
                 });
             }

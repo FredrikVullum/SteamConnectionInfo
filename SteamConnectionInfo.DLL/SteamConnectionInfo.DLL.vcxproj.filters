@@ -5,18 +5,15 @@
     <ClCompile Include="steam\CSteamID.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="hooks\SendP2PPacket.h" />
     <ClInclude Include="steam\CSteamID.h" />
     <ClInclude Include="steam\ISteamFriends.h" />
     <ClInclude Include="steam\ISteamNetworking.h" />
     <ClInclude Include="steam\SteamTypes.h" />
-    <ClInclude Include="hooks\GetPersonaName.h" />
     <ClInclude Include="helpers\VirtualMethodTableHooker.h" />
     <ClInclude Include="helpers\SignatureFinder.h" />
     <ClInclude Include="models\player.h" />
     <ClInclude Include="helpers\PlayerSerializer.h" />
     <ClInclude Include="helpers\SharedMemoryProducer.h" />
-    <ClInclude Include="helpers\IpToCountryResolver.h" />
     <ClInclude Include="packages\include\nlohmann\json.hpp" />
     <ClInclude Include="packages\include\curl\curl.h" />
     <ClInclude Include="packages\include\curl\curlver.h" />
@@ -32,7 +29,6 @@
     <ClInclude Include="packages\include\curl\websockets.h" />
     <ClInclude Include="packages\include\curl\zconf.h" />
     <ClInclude Include="packages\include\curl\zlib.h" />
-    <ClInclude Include="helpers\LatencyMonitor.h" />
     <ClInclude Include="packages\include\pcap\bluetooth.h" />
     <ClInclude Include="packages\include\pcap\bpf.h" />
     <ClInclude Include="packages\include\pcap\can_socketcan.h" />
@@ -52,6 +48,11 @@
     <ClInclude Include="packages\include\pcap.h" />
     <ClInclude Include="packages\include\pcap-bpf.h" />
     <ClInclude Include="packages\include\pcap-namedb.h" />
+    <ClInclude Include="services\IpToCountryService.h" />
+    <ClInclude Include="services\WorkerService.h" />
+    <ClInclude Include="services\PingMonitorService.h" />
+    <ClInclude Include="services\HookService.h" />
+    <ClInclude Include="globals\players.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="packages\lib\libcurl.lib" />

@@ -62,7 +62,7 @@ namespace SteamConnectionInfoCore.Services
 
 
             try {
-                if (!_producerReadyEvent.WaitOne(TimeSpan.FromSeconds(1)))
+                if (!_producerReadyEvent.WaitOne(TimeSpan.FromMilliseconds(1000)))
                 {
                     return result;
                 }

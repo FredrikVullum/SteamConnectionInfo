@@ -110,9 +110,6 @@ public:
         return false;
     }
 
-    void Wait(const int& ms) {
-        Sleep(ms);
-    }
     void SetData(const std::string& data) {
         ZeroMemory(address, size);
         CopyMemory(address, data.c_str(), data.size());
@@ -131,5 +128,9 @@ public:
 
         if (consumerReadyEvent)
             CloseHandle(consumerReadyEvent);
+    }
+
+    ~SharedMemoryProducer() {
+        Destroy();
     }
 };

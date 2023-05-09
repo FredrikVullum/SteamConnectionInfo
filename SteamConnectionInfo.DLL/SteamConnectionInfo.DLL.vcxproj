@@ -88,6 +88,7 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(ProjectDir)packages\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -108,13 +109,10 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
     <ClCompile Include="steam\CSteamID.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="helpers\IpToCountryResolver.h" />
-    <ClInclude Include="helpers\LatencyMonitor.h" />
     <ClInclude Include="helpers\SharedMemoryProducer.h" />
     <ClInclude Include="helpers\SignatureFinder.h" />
     <ClInclude Include="helpers\VirtualMethodTableHooker.h" />
-    <ClInclude Include="hooks\GetPersonaName.h" />
-    <ClInclude Include="hooks\SendP2PPacket.h" />
+    <ClInclude Include="globals\players.h" />
     <ClInclude Include="models\player.h" />
     <ClInclude Include="helpers\PlayerSerializer.h" />
     <ClInclude Include="packages\include\curl\curl.h" />
@@ -150,6 +148,10 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
     <ClInclude Include="packages\include\pcap\socket.h" />
     <ClInclude Include="packages\include\pcap\usb.h" />
     <ClInclude Include="packages\include\pcap\vlan.h" />
+    <ClInclude Include="services\HookService.h" />
+    <ClInclude Include="services\IpToCountryService.h" />
+    <ClInclude Include="services\PingMonitorService.h" />
+    <ClInclude Include="services\WorkerService.h" />
     <ClInclude Include="steam\CSteamID.h" />
     <ClInclude Include="steam\ISteamFriends.h" />
     <ClInclude Include="steam\ISteamNetworking.h" />

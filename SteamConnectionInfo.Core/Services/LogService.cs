@@ -36,6 +36,17 @@ namespace SteamConnectionInfoCore.Services
             if (!Loaded)
                 return;
 
+            if (player.SteamId == 0)
+                return;
+            if (player.SteamIp == 0)
+                return;
+            if (player.SteamPort == 0)
+                return;
+            if (string.IsNullOrEmpty(player.SteamName))
+                return;
+            if (string.IsNullOrEmpty(player.Country))
+                return;
+        
             try
             {
                 string[] lines = File.ReadAllLines(_filePath);
