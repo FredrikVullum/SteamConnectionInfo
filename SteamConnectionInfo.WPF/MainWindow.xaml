@@ -107,7 +107,6 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Width="110" Header="IP" Binding="{Binding SteamIp, Converter={StaticResource UIntToIPAddressConverter}}" />
                 <DataGridTextColumn Width="70" Header="PING" Binding="{Binding Ping}"/>
-                <DataGridTextColumn Width="50" Header="RELAY" Binding="{Binding SteamRelay}" />
                 <DataGridTextColumn Width="130" Header="COUNTRY" Binding="{Binding Country}" />
                 <DataGridTextColumn Width="*" Header="NAME" Binding="{Binding SteamName}">
                     <DataGridTextColumn.HeaderStyle>
@@ -177,7 +176,6 @@
                         </MenuItem.Icon>
                         <CheckBox Name="checkBoxIp" Content="IP" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
                         <CheckBox Name="checkBoxPing" Content="PING" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
-                        <CheckBox Name="checkBoxRelay" Content="RELAY" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
                         <CheckBox Name="checkBoxCountry" Content="COUNTRY" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
                         <CheckBox Name="checkBoxName" Content="NAME" IsChecked="True" Checked="CheckBoxColumn_Checked" Unchecked="CheckBoxColumn_Unchecked"/>
                     </MenuItem>

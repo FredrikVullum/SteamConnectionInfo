@@ -22,7 +22,6 @@ public:
 	uint32_t			 steam_ip;
 	uint16_t			 steam_port;
 	std::string			 steam_name;
-	uint8_t				 steam_relay;
 	int64_t			     ping;
 	std::string			 country;
 	
@@ -36,7 +35,6 @@ public:
 		steam_ip = 0;
 		steam_port = 0;
 		steam_name = "";
-		steam_relay = 0;
 		ping = 0;
 		country = "";
 	}

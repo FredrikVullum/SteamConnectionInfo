@@ -51,9 +51,6 @@ namespace SteamConnectionInfoCore.Views
                 if (existingPlayer.SteamName != player.SteamName)
                     existingPlayer.SteamName = player.SteamName;
 
-                if(existingPlayer.SteamRelay != player.SteamRelay)
-                    existingPlayer.SteamRelay = player.SteamRelay;
-
                 if (existingPlayer.Country != player.Country)
                     existingPlayer.Country = player.Country;
             }

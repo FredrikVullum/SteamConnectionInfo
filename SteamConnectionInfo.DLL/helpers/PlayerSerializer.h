@@ -17,7 +17,6 @@ public:
 				{"steam_port", player.steam_port},
 				{"steam_name", player.steam_name},
 				{"steam_id", steam_id.ConvertToUint64()},
-				{"steam_relay", player.steam_relay},
 				{"country", player.country},
 				{"ping", player.ping}
 			};

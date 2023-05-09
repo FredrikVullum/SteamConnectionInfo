@@ -10,7 +10,6 @@ namespace SteamConnectionInfoCore.Models
         private ushort _steamPort = 0;
         private string _steamName = "Unknown";
         private ulong  _steamId = 0;
-        private byte   _steamRelay = 0;
         private string _country = "Unknown";
         private long   _ping = 0;
 
@@ -57,17 +56,6 @@ namespace SteamConnectionInfoCore.Models
             }
         }
 
-        [JsonProperty("steam_relay")]
-        public byte SteamRelay
-        {
-            get => _steamRelay;
-            set
-            {
-                _steamRelay = value;
-                OnPropertyChanged();
-            }
-        }
-
         [JsonProperty("country")]
         public string Country
         {
@@ -96,7 +84,6 @@ namespace SteamConnectionInfoCore.Models
             SteamPort = 0;
             SteamName = "Unknown";
             SteamId = 0;
-            SteamRelay = 0;
             Country = "Unknown";
             Ping = 0;
         }
@@ -104,7 +91,7 @@ namespace SteamConnectionInfoCore.Models
         public override string ToString()
         {
             return $"Steam IP: {SteamIp}, Port: {SteamPort}, Name: {SteamName}, " +
-                $"ID: {SteamId}, Relay: {SteamRelay}, Country: {Country}, Ping: {Ping}";
+                $"ID: {SteamId}, Country: {Country}, Ping: {Ping}";
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

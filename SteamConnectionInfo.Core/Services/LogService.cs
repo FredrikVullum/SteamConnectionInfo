@@ -67,14 +67,13 @@ namespace SteamConnectionInfoCore.Services
                     }
                 }
 
-                if (playerFromLog == null)
+                if (playerFromLog == null || playerFromLog.Port != player.SteamPort)
                 {
                     var output = new LogPlayer {
                         TimestampUtc = DateTime.UtcNow,
                         Ip = player.SteamIp,
                         Port = player.SteamPort,
                         Country = player.Country,
-                        UsingSteamRelay = player.SteamRelay,
                         SteamName = player.SteamName,
                         SteamId = player.SteamId
                     };
@@ -84,27 +83,6 @@ namespace SteamConnectionInfoCore.Services
                         file.WriteLine(JsonConvert.SerializeObject(output));
                     }
                 }
-                else
-                {
-                    if(playerFromLog.Port != player.SteamPort)
-                    {
-                        var output = new LogPlayer {
-                            TimestampUtc = DateTime.UtcNow,
-                            Ip = player.SteamIp,
-                            Port = player.SteamPort,
-                            Country = player.Country,
-                            UsingSteamRelay = player.SteamRelay,
-                            SteamName = player.SteamName,
-                            SteamId = player.SteamId
-                        };
-
-                        using (StreamWriter file = new StreamWriter(_filePath, true))
-                        {
-                            file.WriteLine(JsonConvert.SerializeObject(output));
-                        }
-                    }
-                }
-
             }
             catch
             {

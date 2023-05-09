@@ -32,9 +32,6 @@ namespace WorkerService
 					if (player.session_state.m_nRemotePort && player.steam_port != player.session_state.m_nRemotePort) {
 						player.steam_port = player.session_state.m_nRemotePort;
 					}
-					if (player.steam_relay != player.session_state.m_bUsingRelay) {
-						player.steam_relay = player.session_state.m_bUsingRelay;
-					}
 					it++;
 				}
 				else {

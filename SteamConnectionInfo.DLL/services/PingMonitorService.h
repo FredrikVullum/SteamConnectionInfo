@@ -7,7 +7,11 @@ namespace PingMonitorService {
 	const uint16_t              STUN_REQUEST_SIZE = 56;
 	const uint16_t              STUN_RESPONSE_SIZE = 68;
 	std::mutex                  mutex;
-	bool					    running;
+
+	char error_buffer[PCAP_ERRBUF_SIZE];
+	struct bpf_program bpf_filter;
+	pcap_t* pcap_handle;
+	pcap_if_t* device_list;
 
 	static void packet_callback(u_char* user_data, const struct pcap_pkthdr* packet_header, const u_char* packet_data)
 	{
@@ -67,13 +71,6 @@ namespace PingMonitorService {
 
 	void Run()
 	{
-		running = true;
-
-		char error_buffer[PCAP_ERRBUF_SIZE];
-		struct bpf_program bpf_filter;
-		pcap_t* pcap_handle;
-		pcap_if_t* device_list;
-
 		int findalldevs_result = pcap_findalldevs_ex(PCAP_SRC_IF_STRING, nullptr, &device_list, error_buffer);
 		if (findalldevs_result != 0) {
 			return;
@@ -107,9 +104,7 @@ namespace PingMonitorService {
 			return;
 		}
 
-
 		const char filter[] = "udp and ((udp[8:2] = 0x0001) or (udp[8:2] = 0x0101)) and ((udp[10:2] = 0x0030) or (udp[10:2] = 0x0024))";
-
 
 		if (pcap_compile(pcap_handle, &bpf_filter, filter, 1, PCAP_NETMASK_UNKNOWN) == -1) {
 			pcap_close(pcap_handle);
@@ -124,16 +119,21 @@ namespace PingMonitorService {
 			return;
 		}
 
-		while (running) {
-			int ret = pcap_loop(pcap_handle, -1, packet_callback, NULL);
-		}
+		//after idling for about 30 minutes the cpu usage suddenly spikes 10x and packets are no longer captured? attempted fix
+		int pcap_loop_ret = pcap_loop(pcap_handle, -1, packet_callback, NULL);
 
 		pcap_freecode(&bpf_filter);
 		pcap_close(pcap_handle);
 		pcap_freealldevs(device_list);
+		memset(error_buffer, 0, PCAP_ERRBUF_SIZE);
+
+		if (pcap_loop_ret == -1) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+			Run();
+		}
 	}
 
 	void Stop() {
-		running = false;
+		pcap_breakloop(pcap_handle);
 	}
 }
