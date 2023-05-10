@@ -54,6 +54,8 @@ SteamConnectionInfo.WPF is the C# project that builds SteamConnectionInfo.WPF.ex
 
 **TODO**
 
+Add functionality to save the column widths to a file so they are loaded when SteamConnectionInfo starts
+
 Fix code naming convention to match in all parts of the SteamConnectionInfo.DLL code
 
 Add functionality to set your own keybindings for locking/unlocking and hiding/showing the overlay
@@ -66,4 +68,4 @@ Fix the Opacity slider background in the tray menu
 
 Add functionality to change the overlay style and font
 
-Add functionality to close P2P session based on player latency and/or country?
+Add functionality to close P2P session based on player latency and/or country... maybe, not sure how I am going to do this yet.
