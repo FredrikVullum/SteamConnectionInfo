@@ -6,7 +6,8 @@
 
 BOOL WINAPI DllMain(HINSTANCE handle, DWORD reason, LPVOID reserved)
 {
-	if (reason == DLL_PROCESS_ATTACH) {
+	if (reason == DLL_PROCESS_ATTACH) 
+	{
 		DisableThreadLibraryCalls(handle);
 
 		std::thread hookThread(HookService::Run);
@@ -19,8 +20,10 @@ BOOL WINAPI DllMain(HINSTANCE handle, DWORD reason, LPVOID reserved)
 		pingMonitorThread.detach();
 		ipToCountryThread.detach();
 	}
-	else if (reason == DLL_PROCESS_DETACH) {
-		if (!reserved) {
+	else if (reason == DLL_PROCESS_DETACH) 
+	{
+		if (!reserved) 
+		{
 			IpToCountryService::Stop();
 			PingMonitorService::Stop();
 			WorkerService::Stop();

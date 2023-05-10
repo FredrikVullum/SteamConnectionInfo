@@ -5,13 +5,15 @@
 #include "../steam/ISteamFriends.h"
 #include "../steam/ISteamNetworking.h"
 
+
 #include "../helpers/VirtualMethodTableHooker.h"
 #include "../helpers/SignatureFinder.h"
 
 
-namespace HookService {
+namespace HookService 
+{
 	typedef const char* (__thiscall* GetPersonaName_t)(ISteamFriends*);
-	const char* __fastcall GetPersonaName_Hook(ISteamFriends* thisptr);
+	const char* __fastcall GetPersonaName_Hook(ISteamFriends* thisptr, void* edx);
 
 	typedef bool(__thiscall* SendP2PPacket_t)(ISteamNetworking*, CSteamID, const void*, unsigned int, EP2PSend, int);
 	bool __fastcall SendP2PPacket_Hook(ISteamNetworking* steamNetworkingInstance, void* edx, CSteamID steamId, const void* pubData, unsigned int cubData, EP2PSend eP2PSendType, int nChannel);
@@ -34,28 +36,22 @@ namespace HookService {
 		}
 
 		DWORD CClientNetworking = SignatureFinder::Find(steam_client_handle, "C7 07 ? ? ? ? C7 47 ? ? ? ? ? E8 ? ? ? ? 8B 47 0C") + 2;
+		if (!CClientNetworking)
+			return;
 
 		DWORD CUserFriends = SignatureFinder::Find(steam_client_handle, "C7 07 ? ? ? ? C7 47 ? ? ? ? ? 8B 40 24") + 2;
-
+		if (!CUserFriends)
+			return;
+		
 		SteamNetworkingHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CClientNetworking);
-		if (!SteamNetworkingHooker)
-			return;
-
 		SteamFriendsHooker = std::make_unique<VirtualMethodTableHooker>(*(DWORD**)CUserFriends);
-		if (!SteamFriendsHooker)
-			return;
-
+	
 		SendP2PPacket = (SendP2PPacket_t)SteamNetworkingHooker->Hook(0, SendP2PPacket_Hook);
-		if (!SendP2PPacket)
-			return;
-
 		GetPersonaName = (GetPersonaName_t)SteamFriendsHooker->Hook(0, GetPersonaName_Hook);
-		if (!GetPersonaName)
-			return;
 	}
 
 	ISteamFriends* SteamFriends;
-	const char* __fastcall GetPersonaName_Hook(ISteamFriends* steam_friends_interface)
+	const char* __fastcall GetPersonaName_Hook(ISteamFriends* steam_friends_interface, void* edx)
 	{
 		mutex.lock();
 		if (SteamFriends != steam_friends_interface) {

@@ -153,6 +153,7 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
     <ClInclude Include="services\PingMonitorService.h" />
     <ClInclude Include="services\WorkerService.h" />
     <ClInclude Include="steam\CSteamID.h" />
+    <ClInclude Include="steam\ISteamClient.h" />
     <ClInclude Include="steam\ISteamFriends.h" />
     <ClInclude Include="steam\ISteamNetworking.h" />
     <ClInclude Include="steam\SteamTypes.h" />
