@@ -8,14 +8,6 @@ Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
 SteamConnectionInfo only works with games that utilize the older [SteamNetworking](https://partner.steamgames.com/doc/api/ISteamNetworking) API.
 
-Games that are currently tested and supported:
-
-Elden Ring
-
-Games that are most likely supported but not tested:
-
-Dark Souls 3
-
 **HOW TO DOWNLOAD**
 
 You have two options:
