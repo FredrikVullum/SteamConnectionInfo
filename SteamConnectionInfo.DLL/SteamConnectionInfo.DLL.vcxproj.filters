@@ -53,7 +53,6 @@
     <ClInclude Include="services\PingMonitorService.h" />
     <ClInclude Include="services\HookService.h" />
     <ClInclude Include="globals\players.h" />
-    <ClInclude Include="steam\ISteamClient.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="packages\lib\libcurl.lib" />
