@@ -8,6 +8,12 @@ Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
 SteamConnectionInfo only works with games that utilize the older [SteamNetworking](https://partner.steamgames.com/doc/api/ISteamNetworking) API.
 
+Games that are currently tested and supported:
+Elden Ring
+
+Games that are most likely supported but not tested:
+Dark Souls 3
+
 **HOW TO DOWNLOAD**
 
 You have two options:
@@ -46,11 +52,11 @@ SteamConnectionInfo.dll uses npcap to monitor packets to measure pings, curl for
 
 **SOLUTION STRUCTURE**
 
-SteamConnectionInfo.DLL is a C++ project that builds SteamConnectionInfo.dll
+SteamConnectionInfo.DLL is the C++ project that builds SteamConnectionInfo.dll which is the DLL that is injected and gathers data from Steam
 
-SteamConnectionInfo.Core is a C# class library that contains core functions for SteamConnectionInfo.WPF
+SteamConnectionInfo.Core is the C# class library that contains core functions for SteamConnectionInfo.WPF
 
-SteamConnectionInfo.WPF is a C# project that builds SteamConnectionInfo.WPF.exe
+SteamConnectionInfo.WPF is the C# project that builds SteamConnectionInfo.WPF.exe which is the overlay and DLL injector
 
 **TODO**
 
