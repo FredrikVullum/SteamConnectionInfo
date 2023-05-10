@@ -40,7 +40,7 @@ Right click the tray icon on your taskbar and click on EXIT to exit SteamConnect
 
 **HOW DOES IT WORK?**
 
-SteamConnectionInfo.WPF.exe injects SteamConnectionInfo.dll into steam.exe, this DLL hooks the function [ReadP2PPacket()](https://partner.steamgames.com/doc/api/ISteamNetworking#ReadP2PPacket) which is found in steamclient.dll. It uses this hook to find important information about the players you are playing with like their Steam ID and their IP address. SteamConnectionInfo.dll communicates with SteamConnectionInfo.WPF.exe through shared memory so that the data gathered from SteamConnectionInfo.dll can be used and displayed by SteamConnectionInfo.WPF.exe
+SteamConnectionInfo.WPF.exe injects SteamConnectionInfo.dll into steam.exe, this DLL hooks the function [SendP2PPacket()](https://partner.steamgames.com/doc/api/ISteamNetworking#SendP2PPacket) which is found in steamclient.dll. It uses this hook to find important information about the players you are playing with like their Steam ID and their IP address. SteamConnectionInfo.dll communicates with SteamConnectionInfo.WPF.exe through shared memory so that the data gathered from SteamConnectionInfo.dll can be used and displayed by SteamConnectionInfo.WPF.exe
 
 SteamConnectionInfo.dll uses npcap to monitor packets to measure pings, curl for accessing ip-api.com for resolving IP addresses to country, and nlohmann for serializing players to JSON in C++.
 
