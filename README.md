@@ -6,7 +6,7 @@ Inspired by [SteamP2PInfo](https://github.com/tremwil/SteamP2PInfo)
 
 **IMPORTANT**
 
-SteamConnectionInfo only works with games that utilize the older [SteamNetworking](https://partner.steamgames.com/doc/api/ISteamNetworking) API.
+SteamConnectionInfo only works with games that utilize the older [SteamNetworking](https://partner.steamgames.com/doc/api/ISteamNetworking) API. Tested and works with Elden Ring.
 
 **HOW TO DOWNLOAD**
 
