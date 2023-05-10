@@ -54,11 +54,13 @@ SteamConnectionInfo.WPF is a C# project that builds SteamConnectionInfo.WPF.exe
 
 **TODO**
 
+Add functionality to set your own keybindings for locking/unlocking and hiding/showing the overlay
+
+Add column to display the Avg. Ping and not just Ping
+
 Add support for games using newer SteamNetworkingMessages interface for P2P
 
 Fix the Opacity slider background in the tray menu
-
-Add functionality to set your own keybindings for locking/unlocking and hiding/showing the overlay
 
 Add functionality to change the overlay style and font
 
