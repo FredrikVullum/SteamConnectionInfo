@@ -54,6 +54,8 @@ SteamConnectionInfo.WPF is the C# project that builds SteamConnectionInfo.WPF.ex
 
 **TODO**
 
+Fix code naming convention to match in all parts of the SteamConnectionInfo.DLL code
+
 Add functionality to set your own keybindings for locking/unlocking and hiding/showing the overlay
 
 Add column to display the Avg. Ping and not just Ping
