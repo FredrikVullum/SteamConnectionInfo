@@ -12,13 +12,13 @@ SteamConnectionInfo only works with games that utilize the older [SteamNetworkin
 
 You have two options:
 
-1. Download SteamConnectionInfo.zip from [Releases](https://github.com/FredrikVullum/SteamConnectionInfo/releases) and extract the contents to a folder of your choosing.
+1. Download the latest zipped version of SteamConnectionInfo from [Releases](https://github.com/FredrikVullum/SteamConnectionInfo/releases) and extract the contents to a folder of your choosing.
 
 2. Clone the repository and build it yourself. Keep in mind that only x86 Release mode is supported. Publish it and copy the files at \bin\x86\Release\net6.0-windows\publish\win-x86 to a folder of your choosing.
 
 **HOW TO RUN**
 
-1. Set your game to windowed mode. SteamConnectionInfo will not work if the game is in fullscreen mode.
+1. Set your game to windowed mode. The SteamConnectionInfo overlay will not show if the game is in fullscreen mode.
 2. Make sure SteamConnectionInfo.WPF.exe is in the same folder as SteamConnectionInfo.dll
 3. Run SteamConnectionInfo.WPF.exe
 
