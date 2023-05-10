@@ -91,13 +91,11 @@ namespace SteamConnectionInfoWpf
 
             checkBoxIp.IsChecked = ConfigurationService.Get(config => config.ColumnIpEnabled);
             checkBoxPing.IsChecked = ConfigurationService.Get(config => config.ColumnPingEnabled);
-            checkBoxRelay.IsChecked = ConfigurationService.Get(config => config.ColumnRelayEnabled);
             checkBoxCountry.IsChecked = ConfigurationService.Get(config => config.ColumnCountryEnabled);
             checkBoxName.IsChecked = ConfigurationService.Get(config => config.ColumnNameEnabled);
 
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxIp, (bool)checkBoxIp.IsChecked);
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxPing, (bool)checkBoxPing.IsChecked);
-            WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxRelay, (bool)checkBoxRelay.IsChecked);
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxCountry, (bool)checkBoxCountry.IsChecked);
             WindowServiceHelper.ShowOrHideColumn(PlayersDataGrid, checkBoxName, (bool)checkBoxName.IsChecked);
 
@@ -322,9 +320,6 @@ namespace SteamConnectionInfoWpf
                         case "PING":
                             ConfigurationService.Upsert(config => config.ColumnPingEnabled, show);
                             break;
-                        case "RELAY":
-                            ConfigurationService.Upsert(config => config.ColumnRelayEnabled, show);
-                            break;
                         case "COUNTRY":
                             ConfigurationService.Upsert(config => config.ColumnCountryEnabled, show);
                             break;
@@ -360,7 +355,7 @@ namespace SteamConnectionInfoWpf
                             }
                         });
 
-                        Thread.Sleep(1000);
+                        Thread.Sleep(500);
                     }
                 });
             }
@@ -407,7 +402,7 @@ namespace SteamConnectionInfoWpf
                             });
                         }
 
-                        Thread.Sleep(500);
+                        Thread.Sleep(200);
                     }
                 });
             }

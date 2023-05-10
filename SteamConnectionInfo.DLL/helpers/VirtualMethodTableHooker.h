@@ -2,83 +2,80 @@
 #include <map>
 #include "Windows.h"
 
-namespace Hooks
+class VirtualMethodTableHooker
 {
-    class VirtualMethodTableHooker
+private:
+    std::map<DWORD, DWORD*> hooks;
+    DWORD** vmt;
+public:
+    VirtualMethodTableHooker(DWORD* vmtToSet)
     {
-        private:
-            std::map<DWORD, DWORD*> hooks;
-            DWORD** vmt;
-        public:
-            VirtualMethodTableHooker(DWORD* vmtToSet)
-            {
-                vmt = reinterpret_cast<DWORD**>(vmtToSet);
-            }
+        vmt = reinterpret_cast<DWORD**>(vmtToSet);
+    }
 
-            template<class Fn>
-            Fn Hook(DWORD index, Fn hook)
-            {
-                if (!vmt || index > GetNumberOfFunctions() || index < 0)
-                    return nullptr;
+    template<class Fn>
+    Fn Hook(DWORD index, Fn hook)
+    {
+        if (!vmt || index > GetNumberOfFunctions() || index < 0)
+            return nullptr;
 
-                auto original = vmt[index];
+        auto original = vmt[index];
 
-                DWORD old;
-                VirtualProtect(vmt, sizeof(DWORD), PAGE_EXECUTE_READWRITE, &old);
-                vmt[index] = reinterpret_cast<DWORD*>(hook);
-                VirtualProtect(vmt, sizeof(DWORD), old, &old);
+        DWORD old;
+        VirtualProtect(vmt, sizeof(DWORD), PAGE_EXECUTE_READWRITE, &old);
+        vmt[index] = reinterpret_cast<DWORD*>(hook);
+        VirtualProtect(vmt, sizeof(DWORD), old, &old);
 
-                hooks.insert(std::make_pair(index, original));
+        hooks.insert(std::make_pair(index, original));
 
-                return reinterpret_cast<Fn>(original);
-            }
+        return reinterpret_cast<Fn>(original);
+    }
 
-            void Unhook(DWORD index)
-            {
-                auto it = hooks.find(index);
-                if (it != hooks.end())
-                {
-                    auto original = static_cast<DWORD*>(it->second);
+    void Unhook(DWORD index)
+    {
+        auto it = hooks.find(index);
+        if (it != hooks.end())
+        {
+            auto original = static_cast<DWORD*>(it->second);
 
-                    DWORD old;
-                    VirtualProtect(vmt, sizeof(DWORD), PAGE_EXECUTE_READWRITE, &old);
-                    vmt[index] = reinterpret_cast<DWORD*>(original);
-                    VirtualProtect(vmt, sizeof(DWORD), old, &old);
+            DWORD old;
+            VirtualProtect(vmt, sizeof(DWORD), PAGE_EXECUTE_READWRITE, &old);
+            vmt[index] = reinterpret_cast<DWORD*>(original);
+            VirtualProtect(vmt, sizeof(DWORD), old, &old);
 
-                    hooks.erase(it);
-                }
-            }
+            hooks.erase(it);
+        }
+    }
 
-            void UnhookAll()
-            {
-                for (auto it = hooks.begin(); it != hooks.end();)
-                {
-                    auto original = it->second;
+    void UnhookAll()
+    {
+        for (auto it = hooks.begin(); it != hooks.end();)
+        {
+            auto original = it->second;
 
-                    DWORD old;
-                    VirtualProtect(vmt, sizeof(DWORD), PAGE_EXECUTE_READWRITE, &old);
-                    vmt[it->first] = original;
-                    VirtualProtect(vmt, sizeof(DWORD), old, &old);
+            DWORD old;
+            VirtualProtect(vmt, sizeof(DWORD), PAGE_EXECUTE_READWRITE, &old);
+            vmt[it->first] = original;
+            VirtualProtect(vmt, sizeof(DWORD), old, &old);
 
-                    hooks.erase(it++);
-                }
-            }
+            hooks.erase(it++);
+        }
+    }
 
-            DWORD GetNumberOfFunctions() {
-                if (!vmt)
-                    return 0;
-                DWORD index;
-                for (index = 0; vmt[index]; index++)
-                {
-                    if (IsBadCodePtr(reinterpret_cast<FARPROC>(vmt[index])))
-                        break;
-                }
-                return index;
-            }
+    DWORD GetNumberOfFunctions() {
+        if (!vmt)
+            return 0;
+        DWORD index;
+        for (index = 0; vmt[index]; index++)
+        {
+            if (IsBadCodePtr(reinterpret_cast<FARPROC>(vmt[index])))
+                break;
+        }
+        return index;
+    }
 
-            ~VirtualMethodTableHooker()
-            {
-                UnhookAll();
-            }
-    };
-}
+    ~VirtualMethodTableHooker()
+    {
+        UnhookAll();
+    }
+};

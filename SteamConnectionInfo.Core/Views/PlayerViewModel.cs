@@ -45,20 +45,11 @@ namespace SteamConnectionInfoCore.Views
                 if (existingPlayer.SteamPort != player.SteamPort)
                     existingPlayer.SteamPort = player.SteamPort;
 
-                if(existingPlayer.SteamPort != player.SteamPort)
-                    existingPlayer.SteamPort = player.SteamPort;
-
-                if(existingPlayer.Ping != player.Ping)
+                if (existingPlayer.Ping != player.Ping)
                     existingPlayer.Ping = player.Ping;
 
-                if(existingPlayer.SteamName != player.SteamName)
+                if (existingPlayer.SteamName != player.SteamName)
                     existingPlayer.SteamName = player.SteamName;
-
-                if(existingPlayer.SteamId != player.SteamId)
-                    existingPlayer.SteamId = player.SteamId;
-
-                if(existingPlayer.SteamRelay != player.SteamRelay)
-                    existingPlayer.SteamRelay = player.SteamRelay;
 
                 if (existingPlayer.Country != player.Country)
                     existingPlayer.Country = player.Country;
