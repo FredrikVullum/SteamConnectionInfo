@@ -10,8 +10,6 @@ public:
 		json jsonArray = json::array();
 
 		for (const auto& [steam_id, player] : players) {
-			if (player.ping == 0 || player.country.empty() || player.steam_name.empty())
-				continue;
 			json jsonObject = json{
 				{"steam_ip", player.steam_ip},
 				{"steam_port", player.steam_port},

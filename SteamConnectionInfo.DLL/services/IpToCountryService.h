@@ -23,7 +23,7 @@ namespace IpToCountryService
 			player->needs_country = false;
 		}
 		catch (const std::exception& ex) {
-			player->country = "Unknown";
+
 		}
 		mutex.unlock();
 		return size * nmemb;
@@ -48,14 +48,8 @@ namespace IpToCountryService
 				mutex.lock();
 				curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, &player);
 				mutex.unlock();
-				curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, 1);
-				curl_easy_setopt(curl_handle, CURLOPT_CONNECTTIMEOUT, 1);
+				curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, 10);
 				auto res = curl_easy_perform(curl_handle);
-				if (res != CURLE_OK) {
-					mutex.lock();
-					player.country = "Unknown";
-					mutex.unlock();
-				}
 				curl_easy_cleanup(curl_handle);
 			}
 		}
@@ -84,7 +78,7 @@ namespace IpToCountryService
 				f.wait();
 			}
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		}
 	}
 

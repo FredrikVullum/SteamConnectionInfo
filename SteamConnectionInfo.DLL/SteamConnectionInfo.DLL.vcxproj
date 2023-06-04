@@ -67,7 +67,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)packages\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libcurl.lib;crypt32.lib;ws2_32.lib;zlib.lib;Packet.lib;wpcap.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib;crypt32.lib;ws2_32.lib;zlib.lib;Packet.lib;wpcap.lib;tdh.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -95,7 +95,7 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libcurl.lib;crypt32.lib;ws2_32.lib;zlib.lib;Packet.lib;wpcap.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib;crypt32.lib;ws2_32.lib;zlib.lib;Packet.lib;wpcap.lib;tdh.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)packages\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -109,6 +109,7 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
     <ClCompile Include="steam\CSteamID.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="helpers\MessageBoxShower.h" />
     <ClInclude Include="helpers\SharedMemoryProducer.h" />
     <ClInclude Include="helpers\SignatureFinder.h" />
     <ClInclude Include="helpers\VirtualMethodTableHooker.h" />

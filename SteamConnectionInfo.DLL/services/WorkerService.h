@@ -3,6 +3,7 @@
 #include "../helpers/SharedMemoryProducer.h"
 #include "../helpers/PlayerSerializer.h"
 #include "../globals/players.h"
+#include "../helpers/MessageBoxShower.h"
 
 namespace WorkerService
 {
@@ -13,9 +14,14 @@ namespace WorkerService
 	void Run() {
 		bool producer_initialized = producer.Initialize("SteamConnectionInfoSharedMemoryRegion", 4096);
 
+		if (!producer_initialized) {
+			MessageBoxShower::ShowError("SteamConnectionInfo.dll Error", "Failed to initialize shared memory producer");
+			return;
+		}
+
 		running = true;
 
-		while (producer_initialized && running)
+		while (running)
 		{
 			auto currentTime = std::chrono::steady_clock::now();
 
@@ -24,13 +30,20 @@ namespace WorkerService
 				auto& [steam_id, player] = *it;
 				auto delta = std::chrono::duration_cast<std::chrono::seconds>(currentTime - player.last_p2p_send);
 
-				if (delta.count() <= 5) {
-					if (player.session_state.m_nRemoteIP && player.steam_ip != player.session_state.m_nRemoteIP) {
-						player.steam_ip = player.session_state.m_nRemoteIP;
-						player.needs_country = true;
-					}
-					if (player.session_state.m_nRemotePort && player.steam_port != player.session_state.m_nRemotePort) {
-						player.steam_port = player.session_state.m_nRemotePort;
+				if (delta.count() <= 5) 
+				{
+					if (player.session_state.m_bConnectionActive && player.session_state.m_nRemoteIP && player.session_state.m_nRemotePort) 
+					{
+						if (player.steam_ip != player.session_state.m_nRemoteIP) 
+						{
+							player.steam_ip = player.session_state.m_nRemoteIP;
+							player.needs_country = true;
+						}
+
+						if (player.steam_port != player.session_state.m_nRemotePort) 
+						{
+							player.steam_port = player.session_state.m_nRemotePort;
+						}
 					}
 					it++;
 				}
@@ -47,7 +60,7 @@ namespace WorkerService
 				mutex.unlock();
 			}
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(200));
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}
 	}
 

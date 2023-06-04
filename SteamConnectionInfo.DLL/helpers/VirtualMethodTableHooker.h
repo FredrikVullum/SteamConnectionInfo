@@ -8,7 +8,13 @@ private:
     std::map<DWORD, DWORD*> hooks;
     DWORD** vmt;
 public:
-    VirtualMethodTableHooker(DWORD* vmtToSet)
+
+    VirtualMethodTableHooker()
+    {
+        vmt = nullptr;
+    }
+
+    void SetVmt(void* vmtToSet)
     {
         vmt = reinterpret_cast<DWORD**>(vmtToSet);
     }

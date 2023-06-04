@@ -53,6 +53,7 @@
     <ClInclude Include="services\PingMonitorService.h" />
     <ClInclude Include="services\HookService.h" />
     <ClInclude Include="globals\players.h" />
+    <ClInclude Include="helpers\MessageBoxShower.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="packages\lib\libcurl.lib" />

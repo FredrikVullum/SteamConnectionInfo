@@ -2,6 +2,7 @@
 #include <pcap.h>
 #include "../models/player.h"
 #include "../globals/players.h"
+#include "../helpers/MessageBoxShower.h"
 
 namespace PingMonitorService {
 	const uint16_t              STUN_REQUEST_SIZE = 56;
@@ -73,6 +74,7 @@ namespace PingMonitorService {
 	{
 		int findalldevs_result = pcap_findalldevs_ex(PCAP_SRC_IF_STRING, nullptr, &device_list, error_buffer);
 		if (findalldevs_result != 0) {
+			MessageBoxShower::ShowError("SteamConnectionInfo.dll Error", "Failed to find any network devices");
 			return;
 		}
 
@@ -94,12 +96,14 @@ namespace PingMonitorService {
 		}
 
 		if (device == nullptr) {
+			MessageBoxShower::ShowError("SteamConnectionInfo.dll Error", "Found no active network device");
 			pcap_freealldevs(device_list);
 			return;
 		}
 
 		pcap_handle = pcap_open_live(device->name, 65536, 1, 100, error_buffer);
 		if (pcap_handle == nullptr) {
+			MessageBoxShower::ShowError("SteamConnectionInfo.dll Error", "Failed to open network device");
 			pcap_freealldevs(device_list);
 			return;
 		}
@@ -107,12 +111,14 @@ namespace PingMonitorService {
 		const char filter[] = "udp and ((udp[8:2] = 0x0001) or (udp[8:2] = 0x0101)) and ((udp[10:2] = 0x0030) or (udp[10:2] = 0x0024))";
 
 		if (pcap_compile(pcap_handle, &bpf_filter, filter, 1, PCAP_NETMASK_UNKNOWN) == -1) {
+			MessageBoxShower::ShowError("SteamConnectionInfo.dll Error", "Failed to compile packet filter ");
 			pcap_close(pcap_handle);
 			pcap_freealldevs(device_list);
 			return;
 		}
 
 		if (pcap_setfilter(pcap_handle, &bpf_filter) == -1) {
+			MessageBoxShower::ShowError("SteamConnectionInfo.dll Error", "Failed to set packet filter for network device");
 			pcap_freecode(&bpf_filter);
 			pcap_close(pcap_handle);
 			pcap_freealldevs(device_list);
