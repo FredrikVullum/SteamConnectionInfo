@@ -73,7 +73,20 @@ namespace SteamConnectionInfoWpf
             OpacityLabel.Content = $"{opacityToSet}%";
             OpacitySlider.Value = opacityToSet;
 
-            ThreadRunHelper.RunInjectionThread(this);
+            DynamicLinkLibraryInjectionService.Inject();
+
+            Thread.Sleep(1000);
+
+            if (!DynamicLinkLibraryInjectionService.IsDllInjected())
+            {
+               MessageBox.Show("Failed to inject SteamConnectionInfo.dll into steam.exe, please make sure steam is running and that SteamConnectionInfo.dll is in the correct folder.",
+               "SteamConnectionInfo.WPF.exe error",
+               MessageBoxButton.OK,
+               MessageBoxImage.Exclamation);
+               Application.Current.Shutdown();
+               return;
+            }
+
             ThreadRunHelper.RunSharedMemoryThread(this);
 
             WindowServiceHelper.ShowHideWindow(this);
@@ -333,32 +346,6 @@ namespace SteamConnectionInfoWpf
 
         public static class ThreadRunHelper
         {
-            public static void RunInjectionThread(MainWindow mainWindow)
-            {
-                Task.Run(() =>
-                {
-                    while (true)
-                    {
-                        DynamicLinkLibraryInjectionService.Inject();
-
-                        mainWindow.Dispatcher.Invoke(() =>
-                        {
-                            if (DynamicLinkLibraryInjectionService.IsDllInjected)
-                            {
-                                mainWindow.dllStatusLabel.Content = "LOADED";
-                                mainWindow.dllStatusLabel.Foreground = Brushes.Lime;
-                            }
-                            else
-                            {
-                                mainWindow.dllStatusLabel.Content = "UNLOADED";
-                                mainWindow.dllStatusLabel.Foreground = Brushes.Red;
-                            }
-                        });
-
-                        Thread.Sleep(500);
-                    }
-                });
-            }
             public static void RunSharedMemoryThread(MainWindow mainWindow)
             {
                 Task.Run(() =>

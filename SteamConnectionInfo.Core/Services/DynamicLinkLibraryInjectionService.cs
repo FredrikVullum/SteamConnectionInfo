@@ -5,8 +5,6 @@ namespace SteamConnectionInfoCore.Services
 {
     public static class DynamicLinkLibraryInjectionService
     {
-        public static bool  IsDllInjected             = false;
-
         private const uint  PROCESS_CREATE_THREAD     = 0x0002;
         private const uint  PROCESS_QUERY_INFORMATION = 0x0400;
         private const uint  PROCESS_VM_OPERATION      = 0x0008;
@@ -29,10 +27,36 @@ namespace SteamConnectionInfoCore.Services
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttribute, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
 
+
+        public static bool IsDllInjected()
+        {
+
+            Process? steamProcess = Process.GetProcessesByName("steam").FirstOrDefault();
+
+            if (steamProcess == null)
+            {
+                return false;
+            }
+
+            string dllPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SteamConnectionInfo.dll");
+
+            if (!File.Exists(dllPath))
+            {
+                return false;
+            }
+
+            foreach (ProcessModule module in steamProcess.Modules)
+            {
+                if (string.Equals(module.FileName, dllPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public static void Inject()
         {
-            IsDllInjected = false;
-
+            
             Process? steamProcess = Process.GetProcessesByName("steam").FirstOrDefault();
 
             if (steamProcess == null)
@@ -51,7 +75,6 @@ namespace SteamConnectionInfoCore.Services
             {
                 if (string.Equals(module.FileName, dllPath, StringComparison.OrdinalIgnoreCase))
                 {
-                    IsDllInjected = true;
                     return;
                 }
             }

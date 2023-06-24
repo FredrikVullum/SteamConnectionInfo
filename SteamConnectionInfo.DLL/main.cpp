@@ -1,20 +1,23 @@
 #pragma once
 #include "services/HookService.h"
 
-BOOL WINAPI DllMain(HINSTANCE handle, DWORD reason, LPVOID reserved)
+BOOL WINAPI DllMain(const HMODULE hModule, const DWORD dwReason, const LPVOID lpReserved)
 {
-	if (reason == DLL_PROCESS_ATTACH) 
+	switch (dwReason)
 	{
-		DisableThreadLibraryCalls(handle);
-
-		std::thread(HookService::Run).detach();
-	}
-	else if (reason == DLL_PROCESS_DETACH) 
-	{
-		if (!reserved) 
+		case DLL_PROCESS_ATTACH: 
 		{
-			HookService::Stop();
+			DisableThreadLibraryCalls(hModule);
+
+			HANDLE hookThreadHandle = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)HookService::Run, hModule, 0, 0);
+
+			if (hookThreadHandle)
+				CloseHandle(hookThreadHandle);
+			else
+				return FALSE;
 		}
+		break;
 	}
 	return TRUE;
 }
+

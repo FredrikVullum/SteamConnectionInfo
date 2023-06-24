@@ -110,10 +110,12 @@ if $(Platform)==Win32 xcopy /y "$(TargetPath)" "..\SteamConnectionInfo.WPF\bin\x
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helpers\MessageBoxShower.h" />
+    <ClInclude Include="helpers\ProcessTerminator.h" />
     <ClInclude Include="helpers\SharedMemoryProducer.h" />
     <ClInclude Include="helpers\SignatureFinder.h" />
     <ClInclude Include="helpers\VirtualMethodTableHooker.h" />
     <ClInclude Include="globals\players.h" />
+    <ClInclude Include="models\ping_info.h" />
     <ClInclude Include="models\player.h" />
     <ClInclude Include="helpers\PlayerSerializer.h" />
     <ClInclude Include="packages\include\curl\curl.h" />

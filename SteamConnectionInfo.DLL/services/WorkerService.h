@@ -8,7 +8,6 @@
 namespace WorkerService
 {
 	SharedMemoryProducer producer;
-	std::mutex			 mutex;
 	bool				 running;
 
 	void Run() {
@@ -23,16 +22,19 @@ namespace WorkerService
 
 		while (running)
 		{
+			players_mutex.lock();
+
 			auto currentTime = std::chrono::steady_clock::now();
 
-			mutex.lock();
 			for (auto it = players.begin(); it != players.end();) {
 				auto& [steam_id, player] = *it;
 				auto delta = std::chrono::duration_cast<std::chrono::seconds>(currentTime - player.last_p2p_send);
+				auto player_network_id = player.GetUniqueNetworkId();
+				auto pings_it = player_pings.find(player_network_id);
 
-				if (delta.count() <= 5) 
+				if (delta.count() <= 4) 
 				{
-					if (player.session_state.m_bConnectionActive && player.session_state.m_nRemoteIP && player.session_state.m_nRemotePort) 
+					if (player.session_state.m_nRemoteIP && player.session_state.m_nRemotePort) 
 					{
 						if (player.steam_ip != player.session_state.m_nRemoteIP) 
 						{
@@ -44,20 +46,34 @@ namespace WorkerService
 						{
 							player.steam_port = player.session_state.m_nRemotePort;
 						}
+
+						if (pings_it != player_pings.end())
+						{
+							player.ping = pings_it->second.last_known_ping;
+						}
 					}
+
 					it++;
 				}
 				else {
 					it = players.erase(it);
+
+					if (pings_it != player_pings.end())
+					{
+						player_pings.erase(pings_it);
+					}
 				}
 			}
-			mutex.unlock();
+
+			players_mutex.unlock();
 
 			if (producer.ConsumerIsReady())
 			{
-				mutex.lock();
-				producer.SetData(PlayerSerializer::Serialize(players));
-				mutex.unlock();
+				players_mutex.lock();
+				std::string json_players = PlayerSerializer::Serialize(players);
+				players_mutex.unlock();
+
+				producer.SetData(json_players);
 			}
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));

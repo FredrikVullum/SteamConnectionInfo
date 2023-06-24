@@ -4,15 +4,26 @@
 #include "../globals/players.h"
 #include "../helpers/MessageBoxShower.h"
 
-namespace PingMonitorService {
-	const uint16_t              STUN_REQUEST_SIZE = 56;
-	const uint16_t              STUN_RESPONSE_SIZE = 68;
-	std::mutex                  mutex;
+namespace PingMonitorService 
+{
+	const uint16_t     STUN_REQUEST_SIZE = 56;
+	const uint16_t     STUN_RESPONSE_SIZE = 68;
 
-	char error_buffer[PCAP_ERRBUF_SIZE];
+	char			   error_buffer[PCAP_ERRBUF_SIZE];
 	struct bpf_program bpf_filter;
-	pcap_t* pcap_handle;
-	pcap_if_t* device_list;
+	pcap_t*			   pcap_handle;
+	pcap_if_t*		   device_list;
+
+	int64_t time_delta(const timeval& start, const timeval& end)
+	{
+		int64_t startMillis = static_cast<int64_t>(start.tv_sec) * 1000 + static_cast<int64_t>(start.tv_usec) / 1000;
+		int64_t endMillis = static_cast<int64_t>(end.tv_sec) * 1000 + static_cast<int64_t>(end.tv_usec) / 1000;
+
+		if (endMillis <= startMillis)
+			return 0;
+
+		return endMillis - startMillis;
+	}
 
 	static void packet_callback(u_char* user_data, const struct pcap_pkthdr* packet_header, const u_char* packet_data)
 	{
@@ -32,41 +43,52 @@ namespace PingMonitorService {
 		const uint32_t dst_ip = ntohl(in_dst_ip->S_un.S_addr);
 		const uint16_t dst_port = ntohs(*((uint16_t*)(udp_header + 2)));
 
-
 		timeval current_time = packet_header->ts;
+
+		std::lock_guard<std::mutex> lock(players_mutex);
 
 		if (udp_payload_size == STUN_REQUEST_SIZE)
 		{
-			mutex.lock();
-			for (auto& [steam_id, player] : players) {
-				if (player.steam_ip == dst_ip && player.steam_port == dst_port) {
-					player.last_stun_send_request.tv_sec = current_time.tv_sec;
-					player.last_stun_send_request.tv_usec = current_time.tv_usec;
-					break;
-				}
+			uint64_t unique_id = static_cast<uint64_t>(dst_port) << 32 | static_cast<uint64_t>(dst_ip);
+
+			if (unique_id) 
+			{
+				auto player_ping_info = &player_pings[unique_id];
+				player_ping_info->last_stun_send_request = current_time;
 			}
-			mutex.unlock();
 		}
 
-		if (udp_payload_size == STUN_RESPONSE_SIZE)
+		else if (udp_payload_size == STUN_RESPONSE_SIZE) 
 		{
-			mutex.lock();
-			for (auto& [steam_id, player] : players)
+			uint64_t unique_id = static_cast<uint64_t>(src_port) << 32 | static_cast<uint64_t>(src_ip);
+
+			if (unique_id) 
 			{
-				if (player.steam_ip == src_ip && player.steam_port == src_port && player.last_stun_send_request.tv_sec) {
-					player.last_stun_recv_response.tv_sec = current_time.tv_sec;
-					player.last_stun_recv_response.tv_usec = current_time.tv_usec;
+				auto player_ping_info = &player_pings[unique_id];
 
-					int64_t time_diff_ms = (current_time.tv_sec - player.last_stun_send_request.tv_sec) * 1000 + (current_time.tv_usec - player.last_stun_send_request.tv_usec) / 1000;
+				if (player_ping_info->last_stun_send_request.tv_sec || player_ping_info->last_stun_send_request.tv_usec)
+				{
+					int64_t ping = time_delta(player_ping_info->last_stun_send_request, current_time);
 
-					player.ping = time_diff_ms;
+					if (ping) 
+					{
+						player_ping_info->last_known_ping = ping;
 
-					player.last_stun_send_request.tv_sec = 0;
-					player.last_stun_send_request.tv_usec = 0;
-					break;
+						player_ping_info->last_n_pings.push_back(ping);
+						if (player_ping_info->last_n_pings.size() > 4) 
+						{
+							player_ping_info->last_n_pings.pop_front();
+
+							int64_t sum = std::accumulate(player_ping_info->last_n_pings.begin(), player_ping_info->last_n_pings.end(), 0);
+							int64_t average_ping = sum / static_cast<int64_t>(player_ping_info->last_n_pings.size());
+
+							player_ping_info->average_ping = average_ping;
+						}
+					}
+					
+					player_ping_info->last_stun_send_request = {};
 				}
 			}
-			mutex.unlock();
 		}
 	}
 
@@ -134,12 +156,12 @@ namespace PingMonitorService {
 		memset(error_buffer, 0, PCAP_ERRBUF_SIZE);
 
 		if (pcap_loop_ret == -1) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-			Run();
+			MessageBoxShower::ShowError("SteamConnectionInfo.dll Error", "Packet monitoring loop terminated with an error");
 		}
 	}
 
 	void Stop() {
-		pcap_breakloop(pcap_handle);
+		if(pcap_handle)
+			pcap_breakloop(pcap_handle);
 	}
 }
